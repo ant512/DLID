@@ -5,7 +5,9 @@ This is a simple library that can extract some basic information from data
 retrieved from the PDF417 barcode on the back of most US driving licenses.  Most
 licenses that feature these barcodes follow the DL/ID standard as laid out here:
 
-http://www.aamva.org/DL-ID-Card-Design-Standard/
+ * [http://www.aamva.org/DL-ID-Card-Design-Standard][1]
+
+ [1]: http://www.aamva.org/DL-ID-Card-Design-Standard
 
 The barcode encodes data such as the driver's name, address, zip code, etc.
 
@@ -65,11 +67,11 @@ Call it like so:
 Links
 -----
 
- - [Development blog][1]
- - [BitBucket page][2]
+ - [Development blog][2]
+ - [BitBucket page][3]
 
-  [1]: http://simianzombie.com
-  [2]: http://bitbucket.org/ant512/dlid
+  [2]: http://simianzombie.com
+  [3]: http://bitbucket.org/ant512/dlid
 
 
 Email
