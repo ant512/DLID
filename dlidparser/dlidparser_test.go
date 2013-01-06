@@ -8,9 +8,9 @@ func TestParseV4(t *testing.T) {
 	s, err := Parse("@\n\x1e\rANSI 636000040002DL00410278ZV03190008DLDAQT64235789\nDCSSAMPLE\nDDEN\nDACMICHAEL\nDDFN\nDADJOHN\nDDGN\nDCUJR\nDCAD\nDCBK\nDCDPH\nDBD06062008\nDBB06061986\nDBA12102012\nDBC1\nDAU068 in\nDAYBRO\nDAG2300 WEST BROAD STREET\nDAIRICHMOND\nDAJVA\nDAK232690000 \nDCF2424244747474786102204\nDCGUSA\nDCK123456789\nDDAM\nDDB06062008\nDDC06062009\nDDD1\rZVZVA01\r")
 
 	if err != nil {
-		t.Error("V7 parser failed")
+		t.Error("V4 parser failed")
 	} else {
-		t.Log("V7 parser passed: ", s.FirstName(), " ", s.LastName())
+		t.Log("V4 parser passed: ", s.FirstName(), " ", s.LastName())
 	}
 }
 
@@ -18,9 +18,9 @@ func TestParseV5(t *testing.T) {
 	s, err := Parse("@\n\x1e\rANSI 636000050002DL00410278ZV03190008DLDAQT64235789\nDCSSAMPLE\nDDEN\nDACMICHAEL\nDDFN\nDADJOHN\nDDGN\nDCUJR\nDCAD\nDCBK\nDCDPH\nDBD06062008\nDBB06061986\nDBA12102012\nDBC1\nDAU068 in\nDAYBRO\nDAG2300 WEST BROAD STREET\nDAIRICHMOND\nDAJVA\nDAK232690000 \nDCF2424244747474786102204\nDCGUSA\nDCK123456789\nDDAM\nDDB06062008\nDDC06062009\nDDD1\rZVZVA01\r")
 
 	if err != nil {
-		t.Error("V7 parser failed")
+		t.Error("V5 parser failed")
 	} else {
-		t.Log("V7 parser passed: ", s.FirstName(), " ", s.LastName())
+		t.Log("V5 parser passed: ", s.FirstName(), " ", s.LastName())
 	}
 }
 
@@ -28,9 +28,9 @@ func TestParseV6(t *testing.T) {
 	s, err := Parse("@\n\x1e\rANSI 636000060002DL00410278ZV03190008DLDAQT64235789\nDCSSAMPLE\nDDEN\nDACMICHAEL\nDDFN\nDADJOHN\nDDGN\nDCUJR\nDCAD\nDCBK\nDCDPH\nDBD06062008\nDBB06061986\nDBA12102012\nDBC1\nDAU068 in\nDAYBRO\nDAG2300 WEST BROAD STREET\nDAIRICHMOND\nDAJVA\nDAK232690000 \nDCF2424244747474786102204\nDCGUSA\nDCK123456789\nDDAM\nDDB06062008\nDDC06062009\nDDD1\rZVZVA01\r")
 
 	if err != nil {
-		t.Error("V7 parser failed")
+		t.Error("V6 parser failed")
 	} else {
-		t.Log("V7 parser passed: ", s.FirstName(), " ", s.LastName())
+		t.Log("V6 parser passed: ", s.FirstName(), " ", s.LastName())
 	}
 }
 
