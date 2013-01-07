@@ -84,7 +84,7 @@ func parseDataV2(licenceData string, issuer string) (license *DLIDLicense, err e
 
 		case "DCD":
 			license.SetEndorsementCodes(data)
-			
+
 		case "DCS":
 			license.SetLastName(data)
 
@@ -121,6 +121,9 @@ func parseDataV2(licenceData string, issuer string) (license *DLIDLicense, err e
 
 		case "DAK":
 			license.SetPostal(data)
+
+		case "DAQ":
+			license.SetCustomerId(data)
 
 		case "DBB":
 			license.SetDateOfBirth(parseDateV2(data))

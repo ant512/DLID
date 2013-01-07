@@ -31,7 +31,7 @@ type DLIDLicense struct {
 	vehicleClass          string
 	restrictionCodes      string
 	endorsementCodes      string
-	driverId              string
+	customerId            string
 	documentDiscriminator string
 }
 
@@ -161,4 +161,12 @@ func (d *DLIDLicense) EndorsementCodes() string {
 
 func (d *DLIDLicense) SetEndorsementCodes(s string) {
 	d.endorsementCodes = s
+}
+
+func (d *DLIDLicense) CustomerId() string {
+	return d.customerId
+}
+
+func (d *DLIDLicense) SetCustomerId(s string) {
+	d.customerId = s
 }

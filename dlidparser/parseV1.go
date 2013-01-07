@@ -143,6 +143,9 @@ func parseDataV1(licenceData string, issuer string) (license *DLIDLicense, err e
 			// stored.
 			license.SetPostal(strings.Trim(data, " "))
 
+		case "DAQ":
+			license.SetCustomerId(data)
+
 		case "DBB":
 			license.SetDateOfBirth(parseDateV1(data))
 
