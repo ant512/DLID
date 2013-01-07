@@ -78,7 +78,7 @@ func parseDataV2(licenceData string, issuer string) (license *DLIDLicense, err e
 		switch identifier {
 		case "DCA":
 			license.SetVehicleClass(data)
-			
+
 		case "DCB":
 			license.SetRestrictionCodes(data)
 
