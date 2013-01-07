@@ -41,6 +41,9 @@ func parseDataV3(licenceData string, issuer string) (license *DLIDLicense, err e
 
 	license = new(DLIDLicense)
 
+	license.SetIssuerId(issuer)
+	license.SetIssuerName(issuers[issuer])
+
 	var dateOfBirth string
 
 	for component := range components {

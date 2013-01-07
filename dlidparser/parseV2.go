@@ -61,6 +61,9 @@ func parseDataV2(licenceData string, issuer string) (license *DLIDLicense, err e
 
 	license = new(DLIDLicense)
 
+	license.SetIssuerId(issuer)
+	license.SetIssuerName(issuers[issuer])
+
 	for component := range components {
 
 		if len(components[component]) < 3 {

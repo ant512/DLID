@@ -24,6 +24,8 @@ type DLIDLicense struct {
 	sex                  DriverSex
 	socialSecurityNumber string
 	dateOfBirth          time.Time
+	issuerId             string
+	issuerName           string
 }
 
 func (d *DLIDLicense) SetFirstName(s string) {
@@ -112,4 +114,20 @@ func (d *DLIDLicense) SetDateOfBirth(t time.Time) {
 
 func (d *DLIDLicense) DateOfBirth() time.Time {
 	return d.dateOfBirth
+}
+
+func (d *DLIDLicense) IssuerId() string {
+	return d.issuerId
+}
+
+func (d *DLIDLicense) SetIssuerId(s string) {
+	d.issuerId = s
+}
+
+func (d *DLIDLicense) IssuerName() string {
+	return d.issuerName
+}
+
+func (d *DLIDLicense) SetIssuerName(s string) {
+	d.issuerName = s
 }
