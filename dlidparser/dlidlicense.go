@@ -13,19 +13,26 @@ const (
 )
 
 type DLIDLicense struct {
-	firstName            string
-	middleName           string
-	lastName             string
-	street               string
-	city                 string
-	state                string
-	country              string
-	postal               string
-	sex                  DriverSex
-	socialSecurityNumber string
-	dateOfBirth          time.Time
-	issuerId             string
-	issuerName           string
+	firstName             string
+	middleName            string
+	lastName              string
+	street                string
+	city                  string
+	state                 string
+	country               string
+	postal                string
+	sex                   DriverSex
+	socialSecurityNumber  string
+	dateOfBirth           time.Time
+	issuerId              string
+	issuerName            string
+	expiryDate            time.Time
+	issueDate             time.Time
+	vehicleClass          string
+	restrictionCodes      string
+	endorsementCodes      string
+	driverId              string
+	documentDiscriminator string
 }
 
 func (d *DLIDLicense) SetFirstName(s string) {
@@ -130,4 +137,28 @@ func (d *DLIDLicense) IssuerName() string {
 
 func (d *DLIDLicense) SetIssuerName(s string) {
 	d.issuerName = s
+}
+
+func (d *DLIDLicense) VehicleClass() string {
+	return d.vehicleClass
+}
+
+func (d *DLIDLicense) SetVehicleClass(s string) {
+	d.vehicleClass = s
+}
+
+func (d *DLIDLicense) RestrictionCodes() string {
+	return d.restrictionCodes
+}
+
+func (d *DLIDLicense) SetRestrictionCodes(s string) {
+	d.restrictionCodes = s
+}
+
+func (d *DLIDLicense) EndorsementCodes() string {
+	return d.endorsementCodes
+}
+
+func (d *DLIDLicense) SetEndorsementCodes(s string) {
+	d.endorsementCodes = s
 }
