@@ -24,6 +24,26 @@ func TestIllegalVersion(t *testing.T) {
 	}
 }
 
+func TestV1ColoradoParser(t *testing.T) {
+	s, err := Parse("@\n\x1e\rANSI 6360200102DL00390187ZV02260031DLDAQ0123456789ABC\nDAAJOHN,Q,PUBLIC\nDAG123 MAIN STREET\nDAIANYTOWN\nDAJVA\nDAK123459999  \nDARDM  \nDAS          \nDAT     \nDAU509\nDAW175\nDAYBL \nDAZBR \nDBA20011201\nDBB19761123\nDBCM\nDBD19961201\rZVZVAJURISDICTIONDEFINEDELEMENT\r")
+
+	if err != nil {
+		t.Error("V1 Colorado parser failed")
+	}
+
+	if s.FirstName() != "JOHN" {
+		t.Error("V1 Colorado parser extracted wrong first name")
+	}
+
+	if s.MiddleNames()[0] != "Q" {
+		t.Error("V1 Colorado parser extracted wrong middle name")
+	}
+
+	if s.LastName() != "PUBLIC" {
+		t.Error("V1 Colorado parser extracted wrong last name")
+	}
+}
+
 func TestV1Parser(t *testing.T) {
 	s, err := Parse("@\n\x1e\rANSI 6360000102DL00390187ZV02260031DLDAQ0123456789ABC\nDAAPUBLIC,JOHN,Q\nDAG123 MAIN STREET\nDAIANYTOWN\nDAJVA\nDAK123459999  \nDARDM  \nDAS          \nDAT     \nDAU509\nDAW175\nDAYBL \nDAZBR \nDBA20011201\nDBB19761123\nDBCM\nDBD19961201\rZVZVAJURISDICTIONDEFINEDELEMENT\r")
 
@@ -122,6 +142,14 @@ func TestV1Parser(t *testing.T) {
 	if s.IssueDate().Year() != 1996 {
 		t.Error("V1 parser got wrong issue year")
 	}
+}
+
+func TestV2Parser(t *testing.T) {
+	
+}
+
+func TestV3Parser(t *testing.T) {
+	
 }
 
 func TestV4Parser(t *testing.T) {
@@ -553,5 +581,49 @@ func TestV7Parser(t *testing.T) {
 
 	if s.IssueDate().Year() != 2008 {
 		t.Error("V7 parser got wrong issue year")
+	}
+}
+
+func TestV7CanadaParser(t *testing.T) {
+	s, err := Parse("@\n\x1e\rANSI 636000070002DL00410282ZV03190008DLDAQT64235789\nDCSSAMPLE\nDDEN\nDACMICHAEL\nDDFN\nDADJOHN,BOB\nDDGN\nDCUJR\nDCAD\nDCBK\nDCDPH\nDBD20080606\nDBB19860607\nDBA20121210\nDBC1\nDAU068 in\nDAYBRO\nDAG2300 WEST BROAD STREET\nDAIRICHMOND\nDAJVA\nDAK232690000 \nDCF2424244747474786102204\nDCGCAN\nDCK123456789\nDDAM\nDDB20080606\nDDC20090606\nDDD1\rZVZVA01\r")
+
+	if err != nil {
+		t.Error("V7 Canada parser failed")
+	}
+
+	if s.DateOfBirth().Day() != 7 {
+		t.Error("V7 Canada parser got wrong date of birth day")
+	}
+
+	if s.DateOfBirth().Month() != 6 {
+		t.Error("V7 Canada parser got wrong date of birth month")
+	}
+
+	if s.DateOfBirth().Year() != 1986 {
+		t.Error("V7 Canada parser got wrong date of birth year")
+	}
+
+	if s.ExpiryDate().Day() != 10 {
+		t.Error("V7 Canada parser got wrong expiry day")
+	}
+
+	if s.ExpiryDate().Month() != 12 {
+		t.Error("V7 Canada parser got wrong expiry month")
+	}
+
+	if s.ExpiryDate().Year() != 2012 {
+		t.Error("V7 Canada parser got wrong expiry year")
+	}
+
+	if s.IssueDate().Day() != 6 {
+		t.Error("V7 Canada parser got wrong issue day")
+	}
+
+	if s.IssueDate().Month() != 6 {
+		t.Error("V7 Canada parser got wrong issue month")
+	}
+
+	if s.IssueDate().Year() != 2008 {
+		t.Error("V7 Canada parser got wrong issue year")
 	}
 }
