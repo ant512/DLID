@@ -104,7 +104,7 @@ func parseDataV1(licenceData string, issuer string) (license *DLIDLicense, err e
 				license.SetFirstName(names[0])
 
 				if len(names) > 2 {
-					license.SetMiddleNames(names[1:len(names)-1])
+					license.SetMiddleNames(names[1 : len(names)-1])
 					license.SetLastName(names[len(names)-1])
 				} else {
 					license.SetLastName(names[1])

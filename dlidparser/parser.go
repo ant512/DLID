@@ -45,6 +45,8 @@ func Parse(data string) (license *DLIDLicense, err error) {
 		fallthrough
 	case 7:
 		license, err = parseV4(data, issuer)
+	default:
+		err = errors.New("Unsupported DLID version number")
 	}
 
 	return
