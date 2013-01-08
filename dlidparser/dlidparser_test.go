@@ -25,7 +25,7 @@ func TestIllegalVersion(t *testing.T) {
 }
 
 func TestV4Parser(t *testing.T) {
-	s, err := Parse("@\n\x1e\rANSI 636000040002DL00410281ZV03190008DLDAQT64235789\nDCSSAMPLE\nDDEN\nDACMICHAEL\nDDFN\nDADJOHN,BOB\nDDGN\nDCUJR\nDCAD\nDCBK\nDCDPH\nDBD06062008\nDBB06071986\nDBA12102012\nDBC1\nDAU068 in\nDAYBRO\nDAG2300 WEST BROAD STREET\nDAIRICHMOND\nDAJVA\nDAK232690000 \nDCF2424244747474786102204\nDCGUSA\nDCK123456789\nDDAM\nDDB06062008\nDDC06062009\nDDD1\rZVZVA01\r")
+	s, err := Parse("@\n\x1e\rANSI 636000040002DL00410282ZV03190008DLDAQT64235789\nDCSSAMPLE\nDDEN\nDACMICHAEL\nDDFN\nDADJOHN,BOB\nDDGN\nDCUJR\nDCAD\nDCBK\nDCDPH\nDBD06062008\nDBB06071986\nDBA12102012\nDBC1\nDAU068 in\nDAYBRO\nDAG2300 WEST BROAD STREET\nDAIRICHMOND\nDAJVA\nDAK232690000 \nDCF2424244747474786102204\nDCGUSA\nDCK123456789\nDDAM\nDDB06062008\nDDC06062009\nDDD1\rZVZVA01\r")
 
 	if err != nil {
 		t.Error("V4 parser failed")
@@ -105,25 +105,241 @@ func TestV4Parser(t *testing.T) {
 }
 
 func TestV5Parser(t *testing.T) {
-	_, err := Parse("@\n\x1e\rANSI 636000050002DL00410278ZV03190008DLDAQT64235789\nDCSSAMPLE\nDDEN\nDACMICHAEL\nDDFN\nDADJOHN\nDDGN\nDCUJR\nDCAD\nDCBK\nDCDPH\nDBD06062008\nDBB06061986\nDBA12102012\nDBC1\nDAU068 in\nDAYBRO\nDAG2300 WEST BROAD STREET\nDAIRICHMOND\nDAJVA\nDAK232690000 \nDCF2424244747474786102204\nDCGUSA\nDCK123456789\nDDAM\nDDB06062008\nDDC06062009\nDDD1\rZVZVA01\r")
+	s, err := Parse("@\n\x1e\rANSI 636000050002DL00410282ZV03190008DLDAQT64235789\nDCSSAMPLE\nDDEN\nDACMICHAEL\nDDFN\nDADJOHN,BOB\nDDGN\nDCUJR\nDCAD\nDCBK\nDCDPH\nDBD06062008\nDBB06071986\nDBA12102012\nDBC1\nDAU068 in\nDAYBRO\nDAG2300 WEST BROAD STREET\nDAIRICHMOND\nDAJVA\nDAK232690000 \nDCF2424244747474786102204\nDCGUSA\nDCK123456789\nDDAM\nDDB06062008\nDDC06062009\nDDD1\rZVZVA01\r")
 
 	if err != nil {
 		t.Error("V5 parser failed")
 	}
+
+	if s.IssuerName() != "Virginia" {
+		t.Error("V5 parser extracted wrong issuer")
+	}
+
+	if s.FirstName() != "MICHAEL" {
+		t.Error("V5 parser extracted wrong first name")
+	}
+
+	if len(s.MiddleNames()) != 2 {
+		t.Error("V5 parser failed to extract middle names")
+	}
+
+	if s.MiddleNames()[0] != "JOHN" || s.MiddleNames()[1] != "BOB" {
+		t.Error("V5 parser extracted wrong middle names")
+	}
+
+	if s.LastName() != "SAMPLE" {
+		t.Error("V5 parser extracted wrong last name")
+	}
+
+	if s.DateOfBirth().Day() != 7 {
+		t.Error("V5 parser got wrong date of birth day")
+	}
+
+	if s.DateOfBirth().Month() != 6 {
+		t.Error("V5 parser got wrong date of birth month")
+	}
+
+	if s.DateOfBirth().Year() != 1986 {
+		t.Error("V5 parser got wrong date of birth year")
+	}
+
+	if s.CustomerId() != "T64235789" {
+		t.Error("V5 parser got wrong customer id")
+	}
+
+	if s.EndorsementCodes() != "PH" {
+		t.Error("V5 parser got wrong endorsement codes")
+	}
+
+	if s.VehicleClass() != "D" {
+		t.Error("V5 parser got wrong vehicle class")
+	}
+
+	if s.RestrictionCodes() != "K" {
+		t.Error("V5 parser got wrong restriction codes")
+	}
+
+	if s.Country() != "USA" {
+		t.Error("V5 parser got wrong country")
+	}
+
+	if s.Street() != "2300 WEST BROAD STREET" {
+		t.Error("V5 parser got wrong street")
+	}
+
+	if s.City() != "RICHMOND" {
+		t.Error("V5 parser got wrong city")
+	}
+
+	if s.State() != "VA" {
+		t.Error("V5 parser got wrong state")
+	}
+
+	if s.Postal() != "23269" {
+		t.Error("V5 parser got wrong postal code")
+	}
+
+	if s.Sex() != DriverSexMale {
+		t.Error("V5 parser got wrong sex")
+	}
 }
 
 func TestV6Parser(t *testing.T) {
-	_, err := Parse("@\n\x1e\rANSI 636000060002DL00410278ZV03190008DLDAQT64235789\nDCSSAMPLE\nDDEN\nDACMICHAEL\nDDFN\nDADJOHN\nDDGN\nDCUJR\nDCAD\nDCBK\nDCDPH\nDBD06062008\nDBB06061986\nDBA12102012\nDBC1\nDAU068 in\nDAYBRO\nDAG2300 WEST BROAD STREET\nDAIRICHMOND\nDAJVA\nDAK232690000 \nDCF2424244747474786102204\nDCGUSA\nDCK123456789\nDDAM\nDDB06062008\nDDC06062009\nDDD1\rZVZVA01\r")
+	s, err := Parse("@\n\x1e\rANSI 636000060002DL00410282ZV03190008DLDAQT64235789\nDCSSAMPLE\nDDEN\nDACMICHAEL\nDDFN\nDADJOHN,BOB\nDDGN\nDCUJR\nDCAD\nDCBK\nDCDPH\nDBD06062008\nDBB06071986\nDBA12102012\nDBC1\nDAU068 in\nDAYBRO\nDAG2300 WEST BROAD STREET\nDAIRICHMOND\nDAJVA\nDAK232690000 \nDCF2424244747474786102204\nDCGUSA\nDCK123456789\nDDAM\nDDB06062008\nDDC06062009\nDDD1\rZVZVA01\r")
 
 	if err != nil {
 		t.Error("V6 parser failed")
 	}
+
+	if s.IssuerName() != "Virginia" {
+		t.Error("V6 parser extracted wrong issuer")
+	}
+
+	if s.FirstName() != "MICHAEL" {
+		t.Error("V6 parser extracted wrong first name")
+	}
+
+	if len(s.MiddleNames()) != 2 {
+		t.Error("V6 parser failed to extract middle names")
+	}
+
+	if s.MiddleNames()[0] != "JOHN" || s.MiddleNames()[1] != "BOB" {
+		t.Error("V6 parser extracted wrong middle names")
+	}
+
+	if s.LastName() != "SAMPLE" {
+		t.Error("V6 parser extracted wrong last name")
+	}
+
+	if s.DateOfBirth().Day() != 7 {
+		t.Error("V6 parser got wrong date of birth day")
+	}
+
+	if s.DateOfBirth().Month() != 6 {
+		t.Error("V6 parser got wrong date of birth month")
+	}
+
+	if s.DateOfBirth().Year() != 1986 {
+		t.Error("V6 parser got wrong date of birth year")
+	}
+
+	if s.CustomerId() != "T64235789" {
+		t.Error("V6 parser got wrong customer id")
+	}
+
+	if s.EndorsementCodes() != "PH" {
+		t.Error("V6 parser got wrong endorsement codes")
+	}
+
+	if s.VehicleClass() != "D" {
+		t.Error("V6 parser got wrong vehicle class")
+	}
+
+	if s.RestrictionCodes() != "K" {
+		t.Error("V6 parser got wrong restriction codes")
+	}
+
+	if s.Country() != "USA" {
+		t.Error("V6 parser got wrong country")
+	}
+
+	if s.Street() != "2300 WEST BROAD STREET" {
+		t.Error("V6 parser got wrong street")
+	}
+
+	if s.City() != "RICHMOND" {
+		t.Error("V6 parser got wrong city")
+	}
+
+	if s.State() != "VA" {
+		t.Error("V6 parser got wrong state")
+	}
+
+	if s.Postal() != "23269" {
+		t.Error("V6 parser got wrong postal code")
+	}
+
+	if s.Sex() != DriverSexMale {
+		t.Error("V6 parser got wrong sex")
+	}
 }
 
 func TestV7Parser(t *testing.T) {
-	_, err := Parse("@\n\x1e\rANSI 636000070002DL00410278ZV03190008DLDAQT64235789\nDCSSAMPLE\nDDEN\nDACMICHAEL\nDDFN\nDADJOHN\nDDGN\nDCUJR\nDCAD\nDCBK\nDCDPH\nDBD06062008\nDBB06061986\nDBA12102012\nDBC1\nDAU068 in\nDAYBRO\nDAG2300 WEST BROAD STREET\nDAIRICHMOND\nDAJVA\nDAK232690000 \nDCF2424244747474786102204\nDCGUSA\nDCK123456789\nDDAM\nDDB06062008\nDDC06062009\nDDD1\rZVZVA01\r")
+	s, err := Parse("@\n\x1e\rANSI 636000070002DL00410282ZV03190008DLDAQT64235789\nDCSSAMPLE\nDDEN\nDACMICHAEL\nDDFN\nDADJOHN,BOB\nDDGN\nDCUJR\nDCAD\nDCBK\nDCDPH\nDBD06062008\nDBB06071986\nDBA12102012\nDBC1\nDAU068 in\nDAYBRO\nDAG2300 WEST BROAD STREET\nDAIRICHMOND\nDAJVA\nDAK232690000 \nDCF2424244747474786102204\nDCGUSA\nDCK123456789\nDDAM\nDDB06062008\nDDC06062009\nDDD1\rZVZVA01\r")
 
 	if err != nil {
 		t.Error("V7 parser failed")
+	}
+
+	if s.IssuerName() != "Virginia" {
+		t.Error("V7 parser extracted wrong issuer")
+	}
+
+	if s.FirstName() != "MICHAEL" {
+		t.Error("V7 parser extracted wrong first name")
+	}
+
+	if len(s.MiddleNames()) != 2 {
+		t.Error("V7 parser failed to extract middle names")
+	}
+
+	if s.MiddleNames()[0] != "JOHN" || s.MiddleNames()[1] != "BOB" {
+		t.Error("V7 parser extracted wrong middle names")
+	}
+
+	if s.LastName() != "SAMPLE" {
+		t.Error("V7 parser extracted wrong last name")
+	}
+
+	if s.DateOfBirth().Day() != 7 {
+		t.Error("V7 parser got wrong date of birth day")
+	}
+
+	if s.DateOfBirth().Month() != 6 {
+		t.Error("V7 parser got wrong date of birth month")
+	}
+
+	if s.DateOfBirth().Year() != 1986 {
+		t.Error("V7 parser got wrong date of birth year")
+	}
+
+	if s.CustomerId() != "T64235789" {
+		t.Error("V7 parser got wrong customer id")
+	}
+
+	if s.EndorsementCodes() != "PH" {
+		t.Error("V7 parser got wrong endorsement codes")
+	}
+
+	if s.VehicleClass() != "D" {
+		t.Error("V7 parser got wrong vehicle class")
+	}
+
+	if s.RestrictionCodes() != "K" {
+		t.Error("V7 parser got wrong restriction codes")
+	}
+
+	if s.Country() != "USA" {
+		t.Error("V7 parser got wrong country")
+	}
+
+	if s.Street() != "2300 WEST BROAD STREET" {
+		t.Error("V7 parser got wrong street")
+	}
+
+	if s.City() != "RICHMOND" {
+		t.Error("V7 parser got wrong city")
+	}
+
+	if s.State() != "VA" {
+		t.Error("V7 parser got wrong state")
+	}
+
+	if s.Postal() != "23269" {
+		t.Error("V7 parser got wrong postal code")
+	}
+
+	if s.Sex() != DriverSexMale {
+		t.Error("V7 parser got wrong sex")
 	}
 }
