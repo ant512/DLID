@@ -73,9 +73,7 @@ func parseDataV4(licenceData string, issuer string) (license *DLIDLicense, err e
 		case "DAD":
 
 			names := strings.Split(data, ",")
-
-			// We don't care about any other middle names.
-			license.SetMiddleName(names[0])
+			license.SetMiddleNames(names)
 
 		case "DCG":
 			license.SetCountry(data)

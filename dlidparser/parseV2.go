@@ -107,7 +107,7 @@ func parseDataV2(licenceData string, issuer string) (license *DLIDLicense, err e
 			license.SetFirstName(names[0])
 
 			if len(names) > 1 {
-				license.SetMiddleName(names[1])
+				license.SetMiddleNames(names[1:])
 			}
 
 		case "DAG":

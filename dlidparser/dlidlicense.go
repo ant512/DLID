@@ -14,7 +14,7 @@ const (
 
 type DLIDLicense struct {
 	firstName             string
-	middleName            string
+	middleNames           []string
 	lastName              string
 	street                string
 	city                  string
@@ -43,12 +43,12 @@ func (d *DLIDLicense) FirstName() string {
 	return d.firstName
 }
 
-func (d *DLIDLicense) SetMiddleName(s string) {
-	d.middleName = s
+func (d *DLIDLicense) SetMiddleNames(s []string) {
+	d.middleNames = s
 }
 
-func (d *DLIDLicense) MiddleName() string {
-	return d.middleName
+func (d *DLIDLicense) MiddleNames() []string {
+	return d.middleNames
 }
 
 func (d *DLIDLicense) SetLastName(s string) {
