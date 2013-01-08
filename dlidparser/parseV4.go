@@ -42,6 +42,8 @@ func parseDataV4(licenceData string, issuer string) (license *DLIDLicense, err e
 	license.SetIssuerName(issuers[issuer])
 
 	var dateOfBirth string
+	var expiryDate string
+	var issueDate string
 
 	for component := range components {
 
@@ -66,6 +68,9 @@ func parseDataV4(licenceData string, issuer string) (license *DLIDLicense, err e
 
 		case "DCS":
 			license.SetLastName(data)
+
+		case "DCU":
+			license.SetNameSuffix(data)
 
 		case "DAC":
 			license.SetFirstName(data)
@@ -92,6 +97,9 @@ func parseDataV4(licenceData string, issuer string) (license *DLIDLicense, err e
 		case "DAQ":
 			license.SetCustomerId(data)
 
+		case "DBA":
+			expiryDate = data
+
 		case "DBB":
 			dateOfBirth = data
 
@@ -104,6 +112,9 @@ func parseDataV4(licenceData string, issuer string) (license *DLIDLicense, err e
 			default:
 				license.SetSex(DriverSexNone)
 			}
+
+		case "DBD":
+			issueDate = data
 		}
 	}
 
@@ -132,9 +143,11 @@ func parseDataV4(licenceData string, issuer string) (license *DLIDLicense, err e
 		}
 	}
 
-	// Now we can parse the birth date, too.
+	// Now we can parse the dates, too.
 	if len(license.Country()) > 0 {
 		license.SetDateOfBirth(parseDateV3(dateOfBirth, license.Country()))
+		license.SetExpiryDate(parseDateV3(expiryDate, license.Country()))
+		license.SetIssueDate(parseDateV3(issueDate, license.Country()))
 	}
 
 	return

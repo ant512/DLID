@@ -51,6 +51,10 @@ func TestV4Parser(t *testing.T) {
 		t.Error("V4 parser extracted wrong last name")
 	}
 
+	if s.NameSuffix() != "JR" {
+		t.Error("V4 parser extracted wrong name suffix")
+	}
+
 	if s.DateOfBirth().Day() != 7 {
 		t.Error("V4 parser got wrong date of birth day")
 	}
@@ -102,6 +106,30 @@ func TestV4Parser(t *testing.T) {
 	if s.Sex() != DriverSexMale {
 		t.Error("V4 parser got wrong sex")
 	}
+
+	if s.ExpiryDate().Day() != 10 {
+		t.Error("V4 parser got wrong expiry day")
+	}
+
+	if s.ExpiryDate().Month() != 12 {
+		t.Error("V4 parser got wrong expiry month")
+	}
+
+	if s.ExpiryDate().Year() != 2012 {
+		t.Error("V4 parser got wrong expiry year")
+	}
+
+	if s.IssueDate().Day() != 6 {
+		t.Error("V4 parser got wrong issue day")
+	}
+
+	if s.IssueDate().Month() != 6 {
+		t.Error("V4 parser got wrong issue month")
+	}
+
+	if s.IssueDate().Year() != 2008 {
+		t.Error("V4 parser got wrong issue year")
+	}
 }
 
 func TestV5Parser(t *testing.T) {
@@ -129,6 +157,10 @@ func TestV5Parser(t *testing.T) {
 
 	if s.LastName() != "SAMPLE" {
 		t.Error("V5 parser extracted wrong last name")
+	}
+
+	if s.NameSuffix() != "JR" {
+		t.Error("V4 parser extracted wrong name suffix")
 	}
 
 	if s.DateOfBirth().Day() != 7 {
@@ -182,6 +214,30 @@ func TestV5Parser(t *testing.T) {
 	if s.Sex() != DriverSexMale {
 		t.Error("V5 parser got wrong sex")
 	}
+
+	if s.ExpiryDate().Day() != 10 {
+		t.Error("5V5 parser got wrong expiry day")
+	}
+
+	if s.ExpiryDate().Month() != 12 {
+		t.Error("V5 parser got wrong expiry month")
+	}
+
+	if s.ExpiryDate().Year() != 2012 {
+		t.Error("V5 parser got wrong expiry year")
+	}
+
+	if s.IssueDate().Day() != 6 {
+		t.Error("V5 parser got wrong issue day")
+	}
+
+	if s.IssueDate().Month() != 6 {
+		t.Error("V5 parser got wrong issue month")
+	}
+
+	if s.IssueDate().Year() != 2008 {
+		t.Error("V5 parser got wrong issue year")
+	}
 }
 
 func TestV6Parser(t *testing.T) {
@@ -209,6 +265,10 @@ func TestV6Parser(t *testing.T) {
 
 	if s.LastName() != "SAMPLE" {
 		t.Error("V6 parser extracted wrong last name")
+	}
+
+	if s.NameSuffix() != "JR" {
+		t.Error("V4 parser extracted wrong name suffix")
 	}
 
 	if s.DateOfBirth().Day() != 7 {
@@ -262,6 +322,30 @@ func TestV6Parser(t *testing.T) {
 	if s.Sex() != DriverSexMale {
 		t.Error("V6 parser got wrong sex")
 	}
+
+	if s.ExpiryDate().Day() != 10 {
+		t.Error("V6 parser got wrong expiry day")
+	}
+
+	if s.ExpiryDate().Month() != 12 {
+		t.Error("V6 parser got wrong expiry month")
+	}
+
+	if s.ExpiryDate().Year() != 2012 {
+		t.Error("V6 parser got wrong expiry year")
+	}
+
+	if s.IssueDate().Day() != 6 {
+		t.Error("V6 parser got wrong issue day")
+	}
+
+	if s.IssueDate().Month() != 6 {
+		t.Error("V6 parser got wrong issue month")
+	}
+
+	if s.IssueDate().Year() != 2008 {
+		t.Error("V6 parser got wrong issue year")
+	}
 }
 
 func TestV7Parser(t *testing.T) {
@@ -289,6 +373,10 @@ func TestV7Parser(t *testing.T) {
 
 	if s.LastName() != "SAMPLE" {
 		t.Error("V7 parser extracted wrong last name")
+	}
+
+	if s.NameSuffix() != "JR" {
+		t.Error("V4 parser extracted wrong name suffix")
 	}
 
 	if s.DateOfBirth().Day() != 7 {
@@ -341,5 +429,29 @@ func TestV7Parser(t *testing.T) {
 
 	if s.Sex() != DriverSexMale {
 		t.Error("V7 parser got wrong sex")
+	}
+
+	if s.ExpiryDate().Day() != 10 {
+		t.Error("V7 parser got wrong expiry day")
+	}
+
+	if s.ExpiryDate().Month() != 12 {
+		t.Error("V7 parser got wrong expiry month")
+	}
+
+	if s.ExpiryDate().Year() != 2012 {
+		t.Error("V7 parser got wrong expiry year")
+	}
+
+	if s.IssueDate().Day() != 6 {
+		t.Error("V7 parser got wrong issue day")
+	}
+
+	if s.IssueDate().Month() != 6 {
+		t.Error("V7 parser got wrong issue month")
+	}
+
+	if s.IssueDate().Year() != 2008 {
+		t.Error("V7 parser got wrong issue year")
 	}
 }

@@ -16,6 +16,7 @@ type DLIDLicense struct {
 	firstName             string
 	middleNames           []string
 	lastName              string
+	nameSuffix            string
 	street                string
 	city                  string
 	state                 string
@@ -57,6 +58,14 @@ func (d *DLIDLicense) SetLastName(s string) {
 
 func (d *DLIDLicense) LastName() string {
 	return d.lastName
+}
+
+func (d *DLIDLicense) SetNameSuffix(s string) {
+	d.nameSuffix = s
+}
+
+func (d *DLIDLicense) NameSuffix() string {
+	return d.nameSuffix
 }
 
 func (d *DLIDLicense) SetStreet(s string) {
@@ -169,4 +178,20 @@ func (d *DLIDLicense) CustomerId() string {
 
 func (d *DLIDLicense) SetCustomerId(s string) {
 	d.customerId = s
+}
+
+func (d *DLIDLicense) SetExpiryDate(t time.Time) {
+	d.expiryDate = t
+}
+
+func (d *DLIDLicense) ExpiryDate() time.Time {
+	return d.expiryDate
+}
+
+func (d *DLIDLicense) SetIssueDate(t time.Time) {
+	d.issueDate = t
+}
+
+func (d *DLIDLicense) IssueDate() time.Time {
+	return d.issueDate
 }
