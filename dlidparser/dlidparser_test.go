@@ -149,7 +149,107 @@ func TestV2Parser(t *testing.T) {
 }
 
 func TestV3Parser(t *testing.T) {
-	
+	s, err := Parse("@\n\x1e\rANSI 636015030002DL00410217ZT02020022DLDCAB\nDCBLP\nDCDP\nDBA04052018\nDCSJONES\nDCTJAMES ROBERT R\nDBD07082012\nDBB10111978\nDBC1\nDAYBRO\nDAU 70 IN\nDAG123 SOME STREET\nDAICITY 12\nDAJTX\nDAK902100000  \nDAQ22334455\nDCF11111111111111111111\nDCGUSA\nDCHB   \nDAZBRO\nDCU\rZTZTA220\nZTBW\n")
+
+	if err != nil {
+		t.Error("V3 parser failed")
+	}
+
+	if s.IssuerName() != "Texas" {
+		t.Error("V3 parser extracted wrong issuer")
+	}
+
+	if s.FirstName() != "JAMES" {
+		t.Error("V3 parser extracted wrong first name")
+	}
+
+	if len(s.MiddleNames()) != 2 {
+		t.Error("V3 parser failed to extract middle names")
+	}
+
+	if s.MiddleNames()[0] != "ROBERT" || s.MiddleNames()[1] != "R" {
+		t.Error("V3 parser extracted wrong middle names")
+	}
+
+	if s.LastName() != "JONES" {
+		t.Error("V3 parser extracted wrong last name")
+	}
+
+	if s.DateOfBirth().Day() != 11 {
+		t.Error("V3 parser got wrong date of birth day")
+	}
+
+	if s.DateOfBirth().Month() != 10 {
+		t.Error("V3 parser got wrong date of birth month")
+	}
+
+	if s.DateOfBirth().Year() != 1978 {
+		t.Error("V3 parser got wrong date of birth year")
+	}
+
+	if s.CustomerId() != "22334455" {
+		t.Error("V3 parser got wrong customer id")
+	}
+
+	if s.EndorsementCodes() != "P" {
+		t.Error("V3 parser got wrong endorsement codes")
+	}
+
+	if s.VehicleClass() != "B" {
+		t.Error("V3 parser got wrong vehicle class")
+	}
+
+	if s.RestrictionCodes() != "LP" {
+		t.Error("V3 parser got wrong restriction codes")
+	}
+
+	if s.Country() != "USA" {
+		t.Error("V3 parser got wrong country")
+	}
+
+	if s.Street() != "123 SOME STREET" {
+		t.Error("V3 parser got wrong street")
+	}
+
+	if s.City() != "CITY 12" {
+		t.Error("V3 parser got wrong city")
+	}
+
+	if s.State() != "TX" {
+		t.Error("V3 parser got wrong state")
+	}
+
+	if s.Postal() != "90210" {
+		t.Error("V3 parser got wrong postal code")
+	}
+
+	if s.Sex() != DriverSexMale {
+		t.Error("V3 parser got wrong sex")
+	}
+
+	if s.ExpiryDate().Day() != 5 {
+		t.Error("V4 parser got wrong expiry day")
+	}
+
+	if s.ExpiryDate().Month() != 4 {
+		t.Error("V3 parser got wrong expiry month")
+	}
+
+	if s.ExpiryDate().Year() != 2018 {
+		t.Error("V3 parser got wrong expiry year")
+	}
+
+	if s.IssueDate().Day() != 8 {
+		t.Error("V3 parser got wrong issue day")
+	}
+
+	if s.IssueDate().Month() != 7 {
+		t.Error("V3 parser got wrong issue month")
+	}
+
+	if s.IssueDate().Year() != 2012 {
+		t.Error("V3 parser got wrong issue year")
+	}
 }
 
 func TestV4Parser(t *testing.T) {
