@@ -78,6 +78,30 @@ func TestV4Parser(t *testing.T) {
 	if s.RestrictionCodes() != "K" {
 		t.Error("V4 parser got wrong restriction codes")
 	}
+
+	if s.Country() != "USA" {
+		t.Error("V4 parser got wrong country")
+	}
+
+	if s.Street() != "2300 WEST BROAD STREET" {
+		t.Error("V4 parser got wrong street")
+	}
+
+	if s.City() != "RICHMOND" {
+		t.Error("V4 parser got wrong city")
+	}
+
+	if s.State() != "VA" {
+		t.Error("V4 parser got wrong state")
+	}
+
+	if s.Postal() != "23269" {
+		t.Error("V4 parser got wrong postal code")
+	}
+
+	if s.Sex() != DriverSexMale {
+		t.Error("V4 parser got wrong sex")
+	}
 }
 
 func TestV5Parser(t *testing.T) {
