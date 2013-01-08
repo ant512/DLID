@@ -77,6 +77,9 @@ func parseDataV1(licenceData string, issuer string) (license *DLIDLicense, err e
 	license.SetIssuerId(issuer)
 	license.SetIssuerName(issuers[issuer])
 
+	// Country is always USA for V1 licenses
+	license.SetCountry("USA")
+
 	for component := range components {
 
 		if len(components[component]) < 3 {
@@ -86,7 +89,18 @@ func parseDataV1(licenceData string, issuer string) (license *DLIDLicense, err e
 		identifier := components[component][0:3]
 		data := components[component][3:]
 
+		data = strings.Trim(data, " ")
+
 		switch identifier {
+		case "DAR":
+			license.SetVehicleClass(data)
+
+		case "DAS":
+			license.SetRestrictionCodes(data)
+
+		case "DAT":
+			license.SetEndorsementCodes(data)
+
 		case "DAA":
 			names := strings.Split(data, ",")
 
@@ -120,6 +134,9 @@ func parseDataV1(licenceData string, issuer string) (license *DLIDLicense, err e
 				}
 			}
 
+		case "DAE":
+			license.SetNameSuffix(data)
+
 		case "DAG":
 			license.SetStreet(data)
 
@@ -146,6 +163,9 @@ func parseDataV1(licenceData string, issuer string) (license *DLIDLicense, err e
 		case "DAQ":
 			license.SetCustomerId(data)
 
+		case "DBA":
+			license.SetExpiryDate(parseDateV1(data))
+
 		case "DBB":
 			license.SetDateOfBirth(parseDateV1(data))
 
@@ -169,6 +189,9 @@ func parseDataV1(licenceData string, issuer string) (license *DLIDLicense, err e
 			default:
 				license.SetSex(DriverSexNone)
 			}
+
+		case "DBD":
+			license.SetIssueDate(parseDateV1(data))
 
 		case "DBK":
 
