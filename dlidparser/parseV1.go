@@ -102,7 +102,17 @@ func parseDataV1(licenceData string, issuer string) (license *DLIDLicense, err e
 			license.SetEndorsementCodes(data)
 
 		case "DAA":
-			names := strings.Split(data, ",")
+
+			// Early versions of the Colorado implementation screwed up the
+			// delimiter - they use a space instead of the specified comma.
+
+			separator := " "
+
+			if strings.Index(data, separator) == -1 {
+				separator = ","
+			}
+
+			names := strings.Split(data, separator)
 
 			// According to the spec, names are ordered LAST,FIRST,MIDDLE.
 			// However, the geniuses in the Colorado DMV order it
@@ -137,14 +147,35 @@ func parseDataV1(licenceData string, issuer string) (license *DLIDLicense, err e
 		case "DAE":
 			license.SetNameSuffix(data)
 
+		case "DAL":
+
+			// Colorado screws up again: they omit the *required* DAG field and
+			// substitute the optional DAL field in older licences.
+			fallthrough
+
 		case "DAG":
 			license.SetStreet(data)
+
+		case "DAN":
+
+			// Again, old Colorado licences ignore the spec.
+			fallthrough
 
 		case "DAI":
 			license.SetCity(data)
 
+		case "DAO":
+
+			// Colorado strikes again.  Honestly, what is the point in having a
+			// spec if you don't follow it?
+			fallthrough
+
 		case "DAJ":
 			license.SetState(data)
+
+		case "DAP":
+			// More Colorado shenanigans.
+			fallthrough
 
 		case "DAK":
 
