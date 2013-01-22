@@ -159,7 +159,7 @@ func parseDataV3(licenceData string, issuer string) (license *DLIDLicense, err e
 		// Naturally, some Texas licences ignore the spec and just use 5
 		// characters if they don't have a +4 section.
 
-		if len(licence.Postal()) > 5 {
+		if len(license.Postal()) > 5 {
 			zip := license.Postal()[:5]
 			plus4 := license.Postal()[5:9]
 
