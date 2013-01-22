@@ -163,7 +163,7 @@ func parseDataV3(licenceData string, issuer string) (license *DLIDLicense, err e
 			zip := license.Postal()[:5]
 			plus4 := license.Postal()[5:9]
 
-			if plus4 == "0000" || plus4 == "    " {
+			if plus4 == "0000" {
 				license.SetPostal(zip)
 			} else {
 				license.SetPostal(zip + "+" + plus4)
