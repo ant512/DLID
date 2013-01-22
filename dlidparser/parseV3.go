@@ -10,6 +10,11 @@ import (
 func parseV3(data string, issuer string) (license *DLIDLicense, err error) {
 
 	start, end, err := dataRangeV2(data)
+
+	if end >= len(data) {
+		err = errors.New("Payload location does not exist in data")
+	}
+
 	payload := data[start:end]
 
 	if err != nil {
@@ -151,13 +156,18 @@ func parseDataV3(licenceData string, issuer string) (license *DLIDLicense, err e
 		// next version of the spec shortens the field to 9 characters) so we
 		// can ignore them.
 
-		zip := license.Postal()[:5]
-		plus4 := license.Postal()[5:9]
+		// Naturally, some Texas licences ignore the spec and just use 5
+		// characters if they don't have a +4 section.
 
-		if plus4 == "0000" {
-			license.SetPostal(zip)
-		} else {
-			license.SetPostal(zip + "+" + plus4)
+		if len(licence.Postal()) > 5 {
+			zip := license.Postal()[:5]
+			plus4 := license.Postal()[5:9]
+
+			if plus4 == "0000" || plus4 == "    " {
+				license.SetPostal(zip)
+			} else {
+				license.SetPostal(zip + "+" + plus4)
+			}
 		}
 	}
 
