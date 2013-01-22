@@ -11,6 +11,16 @@ func parseV1(data string, issuer string) (license *DLIDLicense, err error) {
 
 	start, end, err := dataRangeV1(data)
 
+	if issuer == "636035" {
+		
+		// Illinois are the worst offenders so far in terms of mangling the DLID
+		// spec.  They store name, licence number, expiry date and date of birth
+		// as expected, but then go all-out crazy and encrypt everything else.
+		// This means that the data range exceeds the size of the licence data
+		// string.  We have to treat Illinois as a special case.
+		end = len(data) - 1
+	}
+
 	if end >= len(data) {
 		err = errors.New("Payload location does not exist in data")
 	}

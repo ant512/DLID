@@ -24,6 +24,26 @@ func TestIllegalVersion(t *testing.T) {
 	}
 }
 
+func TestV1IllinoisParser(t *testing.T) {
+	s, err := Parse("@\n\x1e\rANSI 6360350101DL00290178DLDAACDL,SAMPLE,CARD\nDAQC34078360601\nDBA20120101\nDBB19600101\nHMK%>?84_MAD@I,GXHUEMBM,XCCBHUFE@HMG\"<:8$,,,4,,PM^MHM_^=>,4,,,4,HUXO\\GT&PNH>$<;<,=?PNOJHMY!<;PM[=!<HUUN@A")
+
+	if err != nil {
+		t.Error("V1 Illinois parser failed")
+	}
+
+	if s.FirstName() != "SAMPLE" {
+		t.Error("V1 Illinois parser extracted wrong first name")
+	}
+
+	if s.MiddleNames()[0] != "CARD" {
+		t.Error("V1 Illinois parser extracted wrong middle name")
+	}
+
+	if s.LastName() != "CDL" {
+		t.Error("V1 Illinois parser extracted wrong last name")
+	}
+}
+
 func TestV1ColoradoParser(t *testing.T) {
 	s, err := Parse("@\n\x1e\rANSI 6360200102DL00390187ZV02260031DLDAQ0123456789ABC\nDAAJOHN,Q,PUBLIC\nDAG123 MAIN STREET\nDAIANYTOWN\nDAJVA\nDAK123459999  \nDARDM  \nDAS          \nDAT     \nDAU509\nDAW175\nDAYBL \nDAZBR \nDBA20011201\nDBB19761123\nDBCM\nDBD19961201\rZVZVAJURISDICTIONDEFINEDELEMENT\r")
 

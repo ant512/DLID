@@ -138,7 +138,7 @@ func parseDataV4(licenceData string, issuer string) (license *DLIDLicense, err e
 		// We will extract the 5-digit zip and the +4 section.  If the +4 is all
 		// zeros we can discard it.
 
-		if len(license.Postal() > 5) {
+		if len(license.Postal()) > 5 {
 			zip := license.Postal()[:5]
 			plus4 := license.Postal()[5:9]
 
