@@ -44,6 +44,26 @@ func TestV1IllinoisParser(t *testing.T) {
 	}
 }
 
+func TestV1MassachusettsParser(t *testing.T) {
+	s, err := Parse("@\n\x1e\rANSI 6360020102DL00390185ZV02260031DAQ0123456789ABC\nDAAPUBLIC,JOHN,Q\nDAG123 MAIN STREET\nDAIANYTOWN\nDAJVA\nDAK123459999  \nDARDM  \nDAS          \nDAT     \nDAU509\nDAW175\nDAYBL \nDAZBR \nDBA20011201\nDBB19761123\nDBCM\nDBD19961201\rZVZVAJURISDICTIONDEFINEDELEMENT\r")
+
+	if err != nil {
+		t.Error("V1 Massachusetts parser failed")
+	}
+
+	if s.FirstName() != "JOHN" {
+		t.Error("V1 Massachusetts parser extracted wrong first name")
+	}
+
+	if s.MiddleNames()[0] != "Q" {
+		t.Error("V1 Massachusetts parser extracted wrong middle name")
+	}
+
+	if s.LastName() != "PUBLIC" {
+		t.Error("V1 Massachusetts parser extracted wrong last name")
+	}
+}
+
 func TestV1ColoradoParser(t *testing.T) {
 	s, err := Parse("@\n\x1e\rANSI 6360200102DL00390187ZV02260031DLDAQ0123456789ABC\nDAAJOHN,Q,PUBLIC\nDAG123 MAIN STREET\nDAIANYTOWN\nDAJVA\nDAK123459999  \nDARDM  \nDAS          \nDAT     \nDAU509\nDAW175\nDAYBL \nDAZBR \nDBA20011201\nDBB19761123\nDBCM\nDBD19961201\rZVZVAJURISDICTIONDEFINEDELEMENT\r")
 

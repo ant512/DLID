@@ -78,6 +78,14 @@ func parseDataV1(licenceData string, issuer string) (license *DLIDLicense, err e
 
 		licenceData = licenceData[1:]
 
+	} else if issuer == "636002" {
+
+		// Massachusetts didn't include the "DL" chunk header in at least some
+		// of their licenses.
+		if strings.HasPrefix(licenceData, "DL") {
+			licenceData = licenceData[2:]
+		}
+
 	} else if !strings.HasPrefix(licenceData, "DL") {
 		err = errors.New("Missing header in licence data chunk")
 		return
