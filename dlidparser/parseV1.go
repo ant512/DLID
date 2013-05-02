@@ -7,12 +7,18 @@ import (
 	"time"
 )
 
+const ColoradoIssuerId string = "636020"
+const ConnecticutIssuerId string = "636006"
+const IllinoisIssuerId string = "636035"
+const MassachusettsIssuerId string = "636002"
+const SouthCarolinaIssuerId string = "636005"
+
 func parseV1(data string, issuer string) (license *DLIDLicense, err error) {
 
 	start, end, err := dataRangeV1(data)
 
-	if issuer == "636035" {
-		
+	if issuer == IllinoisIssuerId {
+
 		// Illinois are the worst offenders so far in terms of mangling the DLID
 		// spec.  They store name, licence number, expiry date and date of birth
 		// as expected, but then go all-out crazy and encrypt everything else.
@@ -66,7 +72,7 @@ func parseDataV1(licenceData string, issuer string) (license *DLIDLicense, err e
 	// Version 1 of the DLID card spec was published in 2000.  As of 2012, it is
 	// the version used in Colorado.
 
-	if issuer == "636005" {
+	if issuer == SouthCarolinaIssuerId {
 
 		// Either the guys in South Carolina can't count or they don't consider
 		// the "DL" header part of the licence data.  In either case, their
@@ -78,10 +84,11 @@ func parseDataV1(licenceData string, issuer string) (license *DLIDLicense, err e
 
 		licenceData = licenceData[1:]
 
-	} else if issuer == "636002" {
+	} else if issuer == MassachusettsIssuerId ||
+		issuer == ConnecticutIssuerId {
 
-		// Massachusetts didn't include the "DL" chunk header in at least some
-		// of their licenses.
+		// Massachusetts and Connecticut don't include the "DL" chunk header in
+		// at least some of their licenses.
 		if strings.HasPrefix(licenceData, "DL") {
 			licenceData = licenceData[2:]
 		}
@@ -145,7 +152,7 @@ func parseDataV1(licenceData string, issuer string) (license *DLIDLicense, err e
 			//
 			// http://www.aamva.org/IIN-and-RID/
 
-			if issuer == "636020" {
+			if issuer == ColoradoIssuerId {
 
 				// Colorado's backwards formatting style...
 				license.SetFirstName(names[0])

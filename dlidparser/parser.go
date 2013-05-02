@@ -19,7 +19,9 @@ func Parse(data string) (license *DLIDLicense, err error) {
 	// separator) but South Carolina uses 0x1c (file separator) because they're
 	// special.
 
-	if !strings.HasPrefix(data, "@\n\x1e\rANSI ") && !(strings.HasPrefix(data, "@\n\x1c\rANSI ")) {
+	if !strings.HasPrefix(data, "@\n\x1e\rANSI ") &&
+		!(strings.HasPrefix(data, "@\n\x1c\rANSI ") &&
+			!(strings.HasPrefix(data, "@\n\x1c\rAAMVA"))) {
 		return license, errors.New("Data does not contain expected header")
 	}
 
