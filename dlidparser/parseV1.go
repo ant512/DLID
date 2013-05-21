@@ -72,32 +72,30 @@ func parseDataV1(licenceData string, issuer string) (license *DLIDLicense, err e
 	// Version 1 of the DLID card spec was published in 2000.  As of 2012, it is
 	// the version used in Colorado.
 
-	if issuer == SouthCarolinaIssuerId {
+	// We want to strip off the "DL" chunk identifier, but every other state has
+	// managed to screw this up too.  Rather than handle this on a
+	// state-by-state basis, we'll check to see what's at the target location
+	// and handle it appropriately.
+
+	if strings.HasPrefix(licenceData, "DL") {
+
+		// POMG!  They actually got it right!
+		licenceData = licenceData[2:]
+	} else if strings.HasPrefix(licenceData, "L") {
 
 		// Either the guys in South Carolina can't count or they don't consider
 		// the "DL" header part of the licence data.  In either case, their
 		// offset is off by one.
-		if !strings.HasPrefix(licenceData, "L") {
-			err = errors.New("Missing header in licence data chunk")
-			return
-		}
-
 		licenceData = licenceData[1:]
-
-	} else if issuer == MassachusettsIssuerId ||
-		issuer == ConnecticutIssuerId {
-
-		// Massachusetts and Connecticut don't include the "DL" chunk header in
-		// at least some of their licenses.
-		if strings.HasPrefix(licenceData, "DL") {
-			licenceData = licenceData[2:]
-		}
-
-	} else if !strings.HasPrefix(licenceData, "DL") {
-		err = errors.New("Missing header in licence data chunk")
-		return
 	} else {
-		licenceData = licenceData[2:]
+
+		// Honestly, the spec really isn't that hard to follow.  I have no idea
+		// why just about every implementation gets it wrong.  Massachusetts,
+		// Connecticut and Pennsylvania don't include the "DL" chunk header in
+		// at least some of their licenses.
+		//
+		// This else block is here just so I can grumble about badly-implemented
+		// specs.
 	}
 
 	components := strings.Split(licenceData, "\n")
