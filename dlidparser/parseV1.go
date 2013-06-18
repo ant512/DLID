@@ -12,6 +12,7 @@ const ConnecticutIssuerId string = "636006"
 const IllinoisIssuerId string = "636035"
 const MassachusettsIssuerId string = "636002"
 const SouthCarolinaIssuerId string = "636005"
+const TennesseeIssuerId string = "636053"
 
 func parseV1(data string, issuer string) (license *DLIDLicense, err error) {
 
@@ -143,14 +144,14 @@ func parseDataV1(licenceData string, issuer string) (license *DLIDLicense, err e
 			names := strings.Split(data, separator)
 
 			// According to the spec, names are ordered LAST,FIRST,MIDDLE.
-			// However, the geniuses in the Colorado DMV order it
+			// However, the geniuses in the Colorado and Tennessee DMVs order it
 			// FIRST,MIDDLE,LAST.  We'll use the issuer ID number to
 			// identify Colorado and adjust appropriately.  Issuer IDs can
 			// be found here:
 			//
 			// http://www.aamva.org/IIN-and-RID/
 
-			if issuer == ColoradoIssuerId {
+			if issuer == ColoradoIssuerId || issuer == TennesseeIssuerId {
 
 				// Colorado's backwards formatting style...
 				license.SetFirstName(names[0])
