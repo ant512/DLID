@@ -68,10 +68,10 @@ Links
 -----
 
  - [Development blog][2]
- - [BitBucket page][3]
+ - [GitHub page][3]
 
   [2]: http://simianzombie.com
-  [3]: http://bitbucket.org/ant512/dlid
+  [3]: http://github.com/ant512/DLID
 
 
 Email
