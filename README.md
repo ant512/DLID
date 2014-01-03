@@ -53,11 +53,11 @@ Usage
 
 Fetch the package in the usual way:
 
-    go get bitbucket.org/ant512/dlid
+    go get github.com/ant512/DLID
 
 Then import it into your source:
 
-    import "bitbucket.org/ant512/dlid/dlidparser"
+    import "github.com/ant512/DLID/dlidparser"
 
 Call it like so:
 
