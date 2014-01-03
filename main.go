@@ -1,7 +1,7 @@
 package main
 
 import (
-	"bitbucket.org/ant512/dlid/dlidparser"
+	"github.com/ant512/DLID/dlidparser"
 	"log"
 )
 
