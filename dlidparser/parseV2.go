@@ -7,67 +7,57 @@ import (
 	"time"
 )
 
-func parseV2(data string, issuer string) (license *DLIDLicense, err error) {
+func parseV2(data string, issuer string) (*DLIDLicense, error) {
 
 	start, end, err := dataRangeV2(data)
 
 	if end >= len(data) {
-		err = errors.New("Payload location does not exist in data")
+		return nil, errors.New("Payload location does not exist in data")
 	}
 
 	payload := data[start:end]
 
 	if err != nil {
-		return
+		return nil, err
 	}
-
-	license, err = parseDataV2(payload, issuer)
-
-	if err != nil {
-		return
-	}
-
-	return
+	return parseDataV2(payload, issuer)
 }
 
-func dataRangeV2(data string) (start int, end int, err error) {
+func dataRangeV2(data string) (int, int, error) {
 
-	start, err = strconv.Atoi(data[23:27])
+	start, err := strconv.Atoi(data[23:27])
 
 	if err != nil {
-		err = errors.New("Data contains malformed payload location")
-		return
+		return 0, 0, errors.New("Data contains malformed payload location")
 	}
 
-	end, err = strconv.Atoi(data[27:31])
+	end, err := strconv.Atoi(data[27:31])
 
 	if err != nil {
-		err = errors.New("Data contains malformed payload length")
-		return
+		return 0, 0, errors.New("Data contains malformed payload length")
 	}
 
 	end += start
 
-	return
+	return start, end, nil
 }
 
-func parseDataV2(licenceData string, issuer string) (license *DLIDLicense, err error) {
+func parseDataV2(licenceData string, issuer string) (*DLIDLicense, error) {
 
 	// Version 1 of the DLID card spec was published in 2003.
 
 	if !strings.HasPrefix(licenceData, "DL") {
-		err = errors.New("Missing header in licence data chunk")
-		return
+		return nil, errors.New("Missing header in licence data chunk")
 	}
 
 	licenceData = licenceData[2:]
 
 	components := strings.Split(licenceData, "\n")
 
-	license = new(DLIDLicense)
+	license := &DLIDLicense{}
 
-	license.SetIssuerId(issuer)
-	license.SetIssuerName(issuers[issuer])
+	license.IssuerID = issuer
+	license.IssuerName = issuers[issuer]
 
 	for component := range components {
 
@@ -82,16 +72,16 @@ func parseDataV2(licenceData string, issuer string) (license *DLIDLicense, err e
 
 		switch identifier {
 		case "DCA":
-			license.SetVehicleClass(data)
+			license.VehicleClass = data
 
 		case "DCB":
-			license.SetRestrictionCodes(data)
+			license.RestrictionCodes = data
 
 		case "DCD":
-			license.SetEndorsementCodes(data)
+			license.EndorsementCodes = data
 
 		case "DCS":
-			license.SetLastName(data)
+			license.LastName = data
 
 		case "DCT":
 
@@ -109,29 +99,29 @@ func parseDataV2(licenceData string, issuer string) (license *DLIDLicense, err e
 
 			names := strings.Split(data, separator)
 
-			license.SetFirstName(names[0])
+			license.FirstName = names[0]
 
 			if len(names) > 1 {
-				license.SetMiddleNames(names[1:])
+				license.MiddleNames = names[1:]
 			}
 
 		case "DAG":
-			license.SetStreet(data)
+			license.Street = data
 
 		case "DAI":
-			license.SetCity(data)
+			license.City = data
 
 		case "DAJ":
-			license.SetState(data)
+			license.State = data
 
 		case "DAK":
-			license.SetPostal(data)
+			license.Postal = data
 
 		case "DAQ":
-			license.SetCustomerId(data)
+			license.CustomerID = data
 
 		case "DBB":
-			license.SetDateOfBirth(parseDateV2(data))
+			license.DateOfBirth = parseDateV2(data)
 
 		case "DBC":
 
@@ -141,16 +131,16 @@ func parseDataV2(licenceData string, issuer string) (license *DLIDLicense, err e
 
 			switch data {
 			case "1":
-				license.SetSex(DriverSexMale)
+				license.Sex = DriverSexMale
 			case "2":
-				license.SetSex(DriverSexFemale)
+				license.Sex = DriverSexFemale
 			default:
-				license.SetSex(DriverSexNone)
+				license.Sex = DriverSexNone
 			}
 		}
 	}
 
-	return
+	return license, nil
 }
 
 func parseDateV2(data string) time.Time {

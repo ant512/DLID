@@ -1,8 +1,12 @@
 package main
 
 import (
-	"github.com/ant512/DLID/dlidparser"
+	"fmt"
+	"io/ioutil"
 	"log"
+	"os"
+
+	"github.com/derekg/DLID/dlidparser"
 )
 
 func main() {
@@ -13,5 +17,18 @@ func main() {
 		return
 	}
 
-	log.Println(s)
+	fmt.Println()
+	fmt.Println(s)
+	if len(os.Args) > 1 {
+		data, err := ioutil.ReadFile(os.Args[1])
+		if err != nil {
+			log.Fatal(err)
+		}
+		foo, err := dlidparser.Parse(string(data))
+		if err != nil {
+			log.Fatal(err)
+		}
+		fmt.Println(foo)
+	}
+
 }

@@ -5,7 +5,8 @@ import (
 	"strconv"
 )
 
-func Parse(data string) (license *DLIDLicense, err error) {
+//Parse the data string from a pdf417 driver's license barcode
+func Parse(data string) (*DLIDLicense, error) {
 
 	// This parser is based on standards from here:
 	//
@@ -22,22 +23,23 @@ func Parse(data string) (license *DLIDLicense, err error) {
 	// "AAMVA" instead of "ANSI " as part of the header.
 
 	if len(data) < 15 {
-		return license, errors.New("Data does not contain expected header")
+		return nil, errors.New("Data does not contain expected header")
 	}
 
 	if data[0:2] != "@\n" ||
 		data[3] != '\r' ||
-			(data[4:9] != "ANSI " && data[4:9] != "AAMVA") {
-		return license, errors.New("Data does not contain expected header")
+		(data[4:9] != "ANSI " && data[4:9] != "AAMVA") {
+		return nil, errors.New("Data does not contain expected header")
 	}
 
 	issuer := data[9:15]
 	version, err := strconv.Atoi(data[15:17])
 
 	if err != nil {
-		return license, errors.New("Data does not contain a version number")
+		return nil, errors.New("Data does not contain a version number")
 	}
 
+	var license *DLIDLicense
 	switch version {
 	case 1:
 		license, err = parseV1(data, issuer)
@@ -56,6 +58,5 @@ func Parse(data string) (license *DLIDLicense, err error) {
 	default:
 		err = errors.New("Unsupported DLID version number")
 	}
-
-	return
+	return license, err
 }
