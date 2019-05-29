@@ -55,6 +55,11 @@ func Parse(data string) (*DLIDLicense, error) {
 		fallthrough
 	case 7:
 		license, err = parseV4(data, issuer)
+	case 8:
+		license, err = parseV4(data, issuer)
+	case 9:
+		//aamva 09 is 2016 the latest spec - compat w/ the v4
+		license, err = parseV4(data, issuer)
 	default:
 		err = errors.New("Unsupported DLID version number")
 	}

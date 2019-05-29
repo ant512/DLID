@@ -26,7 +26,7 @@ func parseDataV4(licenceData string, issuer string) (*DLIDLicense, error) {
 
 	// Version 4 of the DLID card spec was published in 2009.
 
-	if !strings.HasPrefix(licenceData, "DL") {
+	if !strings.HasPrefix(licenceData, "DL") && !strings.HasPrefix(licenceData, "ID") {
 		return nil, errors.New("Missing header in licence data chunk")
 	}
 
