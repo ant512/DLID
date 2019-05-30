@@ -128,6 +128,12 @@ func parseDataV3(licenceData string, issuer string) (*DLIDLicense, error) {
 		}
 	}
 
+	//if empty default to USA - Michigan - doesn't set DCG - based on license issue 1.20.2017
+	//without country - doesn't parse dates
+	if license.Country == "" {
+		license.Country = "USA"
+	}
+
 	// At this point we should know the country and the postal code (both are
 	// mandatory fields) so we can undo the desperate mess the standards body
 	// made of the postal code field.
