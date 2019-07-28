@@ -10,7 +10,8 @@ func parseV4(data string, issuer string) (*DLIDLicense, error) {
 	start, end, err := dataRangeV2(data)
 
 	if end > len(data) {
-		err = errors.New("Payload location does not exist in data")
+		//lots of states don't count correct - VA i'm looking at you
+		end = len(data) - 1
 	}
 
 	if err != nil {
