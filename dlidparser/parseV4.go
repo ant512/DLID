@@ -1,7 +1,6 @@
 package dlidparser
 
 import (
-	"errors"
 	"strings"
 )
 
@@ -9,10 +8,15 @@ func parseV4(data string, issuer string) (*DLIDLicense, error) {
 
 	start, end, err := dataRangeV2(data)
 
-	if end > len(data) {
-		//lots of states don't count correct - VA i'm looking at you
-		end = len(data) - 1
-	}
+	/*
+		if end > len(data) {
+			//lots of states don't count correct - VA i'm looking at you
+			end = len(data) - 1
+		}
+	*/
+
+	//license files don't really contain extra data
+	end = len(data) - 1
 
 	if err != nil {
 		return nil, err
@@ -26,9 +30,13 @@ func parseDataV4(licenceData string, issuer string) (*DLIDLicense, error) {
 
 	// Version 4 of the DLID card spec was published in 2009.
 
-	if !strings.HasPrefix(licenceData, "DL") && !strings.HasPrefix(licenceData, "ID") {
-		return nil, errors.New("Missing header in licence data chunk")
-	}
+	/*
+		This would be nice but encdoing errors - SC 2014 issued - fail this
+
+		if !strings.HasPrefix(licenceData, "DL") && !strings.HasPrefix(licenceData, "ID") {
+			return nil, errors.New("Missing header in licence data chunk")
+		}
+	*/
 
 	licenceData = licenceData[2:]
 
