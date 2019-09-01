@@ -2,6 +2,7 @@ package dlidparser
 
 import (
 	"errors"
+	"fmt"
 	"strconv"
 	"strings"
 	"time"
@@ -15,29 +16,20 @@ const southCarolinaIssuerID string = "636005"
 const tennesseeIssuerID string = "636053"
 
 func parseV1(data string, issuer string) (*DLIDLicense, error) {
-
-	start, end, err := dataRangeV1(data)
-
-	if issuer == illinoisIssuerID {
-
-		// Illinois are the worst offenders so far in terms of mangling the DLID
-		// spec.  They store name, licence number, expiry date and date of birth
-		// as expected, but then go all-out crazy and encrypt everything else.
-		// This means that the data range exceeds the size of the licence data
-		// string.  We have to treat Illinois as a special case.
-		end = len(data) - 1
+	start, _, _ := dataRangeV1(data)
+	if start == -1 {
+		start, _, _ = dataRangeV1(data)
 	}
-
-	if end >= len(data) {
-		return nil, errors.New("Payload location does not exist in data")
+	//yeah this is a hack
+	if start > len(data) && strings.Index(data, "DAB") != -1 {
+		start = strings.Index(data, "DAB")
 	}
+	if start > len(data) {
+		return nil, fmt.Errorf("couldn't find start of payload")
+	}
+	end := len(data) - 1
 
 	payload := data[start:end]
-
-	if err != nil {
-		return nil, err
-	}
-
 	return parseDataV1(payload, issuer)
 }
 
@@ -52,11 +44,10 @@ func dataRangeV1(data string) (int, int, error) {
 	end, err := strconv.Atoi(data[25:29])
 
 	if err != nil {
-		return 0, 0, errors.New("Data contains malformed payload length")
+		end = len(data) - 1
+	} else {
+		end += start
 	}
-
-	end += start
-
 	return start, end, nil
 }
 
@@ -224,6 +215,16 @@ func parseDataV1(licenceData string, issuer string) (*DLIDLicense, error) {
 		case "DBK":
 			// Optional and probably not available
 			license.SocialSecurityNumber = data
+		case "DAB":
+			license.LastName = data
+		case "DAC":
+			license.FirstName = data
+		case "DAD":
+			license.MiddleNames = []string{data}
+			/*
+				default:
+					fmt.Printf("Unknown: %v : %v\n", identifier, data)
+			*/
 		}
 	}
 	return license, nil
