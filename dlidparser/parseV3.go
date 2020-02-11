@@ -1,7 +1,6 @@
 package dlidparser
 
 import (
-	"errors"
 	"strconv"
 	"strings"
 	"time"
@@ -35,10 +34,12 @@ func parseDataV3(licenceData string, issuer string) (*DLIDLicense, error) {
 	// Version 3 of the DLID card spec was published in 2005.  It is currently
 	// (as of 2012) used in Wisconsin.
 
-	if !strings.HasPrefix(licenceData, "DL") {
-		err := errors.New("Missing header in licence data chunk")
-		return nil, err
-	}
+	/*
+		if !strings.HasPrefix(licenceData, "DL") {
+			err := errors.New("Missing header in licence data chunk")
+			return nil, err
+		}
+	*/
 
 	licenceData = licenceData[2:]
 
