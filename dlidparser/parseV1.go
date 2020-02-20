@@ -232,6 +232,10 @@ func parseDataV1(licenceData string, issuer string) (*DLIDLicense, error) {
 
 func parseDateV1(data string) time.Time {
 
+	if len(data) != 8 {
+		return time.Unix(0, 0)
+	}
+
 	year, err := strconv.Atoi(data[:4])
 
 	if err != nil {

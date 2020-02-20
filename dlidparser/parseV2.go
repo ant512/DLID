@@ -26,6 +26,9 @@ func parseV2(data string, issuer string) (*DLIDLicense, error) {
 
 func dataRangeV2(data string) (int, int, error) {
 
+	if len(data) < 31 {
+		return 0, 0, errors.New("Data is short")
+	}
 	start, err := strconv.Atoi(data[23:27])
 
 	if err != nil {
@@ -149,6 +152,9 @@ func parseDateV2(data string) time.Time {
 	// Sooo, let me get this straight.  They switched from a reasonably-standard
 	// and universal date format (yyyyMMdd) to the bizarre US lumpy format
 	// (MMddyyyy)?  What were they thinking!?
+	if len(data) != 8 {
+		return time.Unix(0, 0)
+	}
 
 	month, err := strconv.Atoi(data[:2])
 

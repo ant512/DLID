@@ -128,7 +128,7 @@ func parseDataV4(licenceData string, issuer string) (*DLIDLicense, error) {
 	// mandatory fields) so we can undo the desperate mess the standards body
 	// made of the postal code field.
 
-	if license.Country == "USA" && len(license.Postal) > 0 {
+	if license.Country == "USA" && len(strings.TrimSpace(license.Postal)) == 9 {
 
 		// Another change to the postal code field!  Surprise!  This time the
 		// standards guys trimmed the field down to 9 characters, which makes
@@ -139,15 +139,13 @@ func parseDataV4(licenceData string, issuer string) (*DLIDLicense, error) {
 		// We will extract the 5-digit zip and the +4 section.  If the +4 is all
 		// zeros we can discard it.
 
-		if len(license.Postal) > 5 {
-			zip := license.Postal[:5]
-			plus4 := license.Postal[5:9]
+		zip := license.Postal[:5]
+		plus4 := license.Postal[5:9]
 
-			if plus4 == "0000" {
-				license.Postal = zip
-			} else {
-				license.Postal = zip + "+" + plus4
-			}
+		if plus4 == "0000" {
+			license.Postal = zip
+		} else {
+			license.Postal = zip + "+" + plus4
 		}
 	}
 

@@ -140,7 +140,7 @@ func parseDataV3(licenceData string, issuer string) (*DLIDLicense, error) {
 	// mandatory fields) so we can undo the desperate mess the standards body
 	// made of the postal code field.
 
-	if strings.Contains(license.Country, "USA") && len(license.Postal) > 0 {
+	if strings.Contains(license.Country, "USA") && len(strings.TrimSpace(license.Postal)) == 9 {
 
 		// For some reason known only to themselves, the standards guys took
 		// the V1 and 2 postal code standards (code padded to 11 characters with
@@ -157,15 +157,13 @@ func parseDataV3(licenceData string, issuer string) (*DLIDLicense, error) {
 		// Naturally, some Texas licences ignore the spec and just use 5
 		// characters if they don't have a +4 section.
 
-		if len(license.Postal) > 5 {
-			zip := license.Postal[:5]
-			plus4 := license.Postal[5:9]
+		zip := license.Postal[:5]
+		plus4 := license.Postal[5:9]
 
-			if plus4 == "0000" {
-				license.Postal = zip
-			} else {
-				license.Postal = zip + "+" + plus4
-			}
+		if plus4 == "0000" {
+			license.Postal = zip
+		} else {
+			license.Postal = zip + "+" + plus4
 		}
 	}
 
@@ -194,6 +192,9 @@ func parseDateV3(data string, country string) time.Time {
 	var err error
 	var location *time.Location
 
+	if len(data) != 8 {
+		return time.Unix(0, 0)
+	}
 	if strings.Contains(country, "USA") {
 		month, err = strconv.Atoi(data[:2])
 

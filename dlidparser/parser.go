@@ -22,7 +22,7 @@ func Parse(data string) (*DLIDLicense, error) {
 	// PA and CT appear to have used old versions of the spec because they use
 	// "AAMVA" instead of "ANSI " as part of the header.
 
-	if len(data) < 15 {
+	if len(data) < 17 {
 		return nil, errors.New("Data does not contain expected header")
 	}
 
