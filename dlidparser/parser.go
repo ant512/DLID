@@ -2,7 +2,9 @@ package dlidparser
 
 import (
 	"errors"
+	"fmt"
 	"strconv"
+	"strings"
 )
 
 //Parse the data string from a pdf417 driver's license barcode
@@ -23,13 +25,21 @@ func Parse(data string) (*DLIDLicense, error) {
 	// "AAMVA" instead of "ANSI " as part of the header.
 
 	if len(data) < 17 {
-		return nil, errors.New("Data does not contain expected header")
+		return nil, errors.New("Data does not contain expected header - ")
+	}
+
+	if strings.HasPrefix(data, "@\n\u001e\rANSI6") {
+		data = strings.Replace(data, "ANSI6", "ANSI 6", 1)
+	}
+	//OREGON / AZ
+	if data[0:8] == "@\r\nANSI " {
+		data = "@\n\u001e\rANSI " + data[8:]
 	}
 
 	if data[0:2] != "@\n" ||
 		data[3] != '\r' ||
 		(data[4:9] != "ANSI " && data[4:9] != "AAMVA") {
-		return nil, errors.New("Data does not contain expected header")
+		return nil, fmt.Errorf("Data does not contain expected header %v", string(data[4:9]))
 	}
 
 	issuer := data[9:15]

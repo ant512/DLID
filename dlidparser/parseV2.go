@@ -38,7 +38,7 @@ func dataRangeV2(data string) (int, int, error) {
 	end, err := strconv.Atoi(data[27:31])
 
 	if err != nil {
-		return 0, 0, errors.New(fmt.Sprintf("Data contains malformed payload length - %v", data[27:31]))
+		return 0, 0, errors.New(fmt.Sprintf("Data contains malformed payload length -%v  %v", start, data[27:31]))
 	}
 
 	end += start
