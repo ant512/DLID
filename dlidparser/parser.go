@@ -32,7 +32,7 @@ func Parse(data string) (*DLIDLicense, error) {
 		data = strings.Replace(data, "ANSI6", "ANSI 6", 1)
 	}
 	//OREGON / AZ
-	if data[0:8] == "@\r\nANSI " {
+	if data[0:8] == "@\r\nANSI " || data[0:8] == "@\n\rANSI " /* for AZ circa 2009 licenses */ {
 		data = "@\n\u001e\rANSI " + data[8:]
 	}
 
