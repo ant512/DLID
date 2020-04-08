@@ -38,6 +38,7 @@ type DLIDLicense struct {
 	EndorsementCodes      string    `json:"endorsement_codes,omitempty"`
 	CustomerID            string    `json:"customer_id,omitempty"`
 	DocumentDiscriminator string    `json:"document_discriminator,omitempty"`
+	AAMVAVersion          int       `json:"aamva_version,omitempty"`
 }
 
 func (d DLIDLicense) String() string {

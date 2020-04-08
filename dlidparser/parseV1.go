@@ -14,6 +14,7 @@ const illinoisIssuerID string = "636035"
 const massachusettsIssuerID string = "636002"
 const southCarolinaIssuerID string = "636005"
 const tennesseeIssuerID string = "636053"
+const minnIssuerID string = "636038"
 
 func parseV1(data string, issuer string) (*DLIDLicense, error) {
 	start, _, _ := dataRangeV1(data)
@@ -91,6 +92,9 @@ func parseDataV1(licenceData string, issuer string) (*DLIDLicense, error) {
 
 	// Country is always USA for V1 licenses
 	license.Country = "USA"
+	expire := ""
+	issue := ""
+	dob := ""
 
 	for component := range components {
 
@@ -126,7 +130,7 @@ func parseDataV1(licenceData string, issuer string) (*DLIDLicense, error) {
 			//
 			// http://www.aamva.org/IIN-and-RID/
 
-			if issuer == coloradoIssuerID || issuer == tennesseeIssuerID {
+			if issuer == coloradoIssuerID || issuer == tennesseeIssuerID || issuer == minnIssuerID {
 				// Colorado's backwards formatting style...
 				license.FirstName = names[0]
 
@@ -188,9 +192,9 @@ func parseDataV1(licenceData string, issuer string) (*DLIDLicense, error) {
 		case "DAQ":
 			license.CustomerID = data
 		case "DBA":
-			license.ExpiryDate = parseDateV1(data)
+			expire = data
 		case "DBB":
-			license.DateOfBirth = parseDateV1(data)
+			dob = data
 		case "DBC":
 			// Sex can be stored as M/F if it uses the DLID code.  It could
 			// also be stored as 0/1/2/9 if it uses the ANSI D-20 codes,
@@ -211,7 +215,7 @@ func parseDataV1(licenceData string, issuer string) (*DLIDLicense, error) {
 				license.Sex = DriverSexNone
 			}
 		case "DBD":
-			license.IssueDate = parseDateV1(data)
+			issue = data
 		case "DBK":
 			// Optional and probably not available
 			license.SocialSecurityNumber = data
@@ -227,6 +231,11 @@ func parseDataV1(licenceData string, issuer string) (*DLIDLicense, error) {
 			*/
 		}
 	}
+
+	license.ExpiryDate = parseDateV1(expire)
+	license.DateOfBirth = parseDateV1(dob)
+	license.IssueDate = parseDateV1(issue)
+
 	return license, nil
 }
 
@@ -254,7 +263,5 @@ func parseDateV1(data string) time.Time {
 		return time.Unix(0, 0)
 	}
 
-	location, _ := time.LoadLocation("UTC")
-
-	return time.Date(year, time.Month(month), day, 0, 0, 0, 0, location)
+	return time.Date(year, time.Month(month), day, 0, 0, 0, 0, time.UTC)
 }

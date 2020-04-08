@@ -190,7 +190,6 @@ func parseDateV3(data string, country string) time.Time {
 	var month int
 	var year int
 	var err error
-	var location *time.Location
 
 	if len(data) != 8 {
 		return time.Unix(0, 0)
@@ -233,7 +232,5 @@ func parseDateV3(data string, country string) time.Time {
 		}
 	}
 
-	location, err = time.LoadLocation("UTC")
-
-	return time.Date(year, time.Month(month), day, 0, 0, 0, 0, location)
+	return time.Date(year, time.Month(month), day, 0, 0, 0, 0, time.UTC)
 }
