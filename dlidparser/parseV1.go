@@ -240,28 +240,19 @@ func parseDataV1(licenceData string, issuer string) (*DLIDLicense, error) {
 }
 
 func parseDateV1(data string) time.Time {
-
-	if len(data) != 8 {
+	var format string
+	switch len(data) {
+	case 8:
+		format = "20060102"
+	case 10: //odd NC vintage 2008 edition licenses
+		format = "01-02-2006"
+	default:
 		return time.Unix(0, 0)
 	}
 
-	year, err := strconv.Atoi(data[:4])
-
+	d, err := time.Parse(format, data)
 	if err != nil {
 		return time.Unix(0, 0)
 	}
-
-	month, err := strconv.Atoi(data[4:6])
-
-	if err != nil {
-		return time.Unix(0, 0)
-	}
-
-	day, err := strconv.Atoi(data[6:8])
-
-	if err != nil {
-		return time.Unix(0, 0)
-	}
-
-	return time.Date(year, time.Month(month), day, 0, 0, 0, 0, time.UTC)
+	return d
 }
