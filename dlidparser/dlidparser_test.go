@@ -31,15 +31,15 @@ func TestV1IllinoisParser(t *testing.T) {
 		t.Error("V1 Illinois parser failed")
 	}
 
-	if s.FirstName() != "SAMPLE" {
+	if s.FirstName != "SAMPLE" {
 		t.Error("V1 Illinois parser extracted wrong first name")
 	}
 
-	if s.MiddleNames()[0] != "CARD" {
+	if s.MiddleNames[0] != "CARD" {
 		t.Error("V1 Illinois parser extracted wrong middle name")
 	}
 
-	if s.LastName() != "CDL" {
+	if s.LastName != "CDL" {
 		t.Error("V1 Illinois parser extracted wrong last name")
 	}
 }
@@ -51,15 +51,15 @@ func TestV1ConnecticutParser(t *testing.T) {
 		t.Error("V1 Connecticut parser failed")
 	}
 
-	if s.FirstName() != "JOHN" {
+	if s.FirstName != "JOHN" {
 		t.Error("V1 Connecticut parser extracted wrong first name")
 	}
 
-	if s.MiddleNames()[0] != "Q" {
+	if s.MiddleNames[0] != "Q" {
 		t.Error("V1 Connecticut parser extracted wrong middle name")
 	}
 
-	if s.LastName() != "PUBLIC" {
+	if s.LastName != "PUBLIC" {
 		t.Error("V1 Connecticut parser extracted wrong last name")
 	}
 }
@@ -71,15 +71,15 @@ func TestV1MassachusettsParser(t *testing.T) {
 		t.Error("V1 Massachusetts parser failed")
 	}
 
-	if s.FirstName() != "JOHN" {
+	if s.FirstName != "JOHN" {
 		t.Error("V1 Massachusetts parser extracted wrong first name")
 	}
 
-	if s.MiddleNames()[0] != "Q" {
+	if s.MiddleNames[0] != "Q" {
 		t.Error("V1 Massachusetts parser extracted wrong middle name")
 	}
 
-	if s.LastName() != "PUBLIC" {
+	if s.LastName != "PUBLIC" {
 		t.Error("V1 Massachusetts parser extracted wrong last name")
 	}
 }
@@ -91,15 +91,15 @@ func TestV1PennsylvaniaParser(t *testing.T) {
 		t.Error("V1 Pennsylvania parser failed")
 	}
 
-	if s.FirstName() != "JOHN" {
+	if s.FirstName != "JOHN" {
 		t.Error("V1 Pennsylvania parser extracted wrong first name")
 	}
 
-	if s.MiddleNames()[0] != "Q" {
+	if s.MiddleNames[0] != "Q" {
 		t.Error("V1 Pennsylvania parser extracted wrong middle name")
 	}
 
-	if s.LastName() != "PUBLIC" {
+	if s.LastName != "PUBLIC" {
 		t.Error("V1 Pennsylvania parser extracted wrong last name")
 	}
 }
@@ -111,15 +111,15 @@ func TestV1ColoradoParser(t *testing.T) {
 		t.Error("V1 Colorado parser failed")
 	}
 
-	if s.FirstName() != "JOHN" {
+	if s.FirstName != "JOHN" {
 		t.Error("V1 Colorado parser extracted wrong first name")
 	}
 
-	if s.MiddleNames()[0] != "Q" {
+	if s.MiddleNames[0] != "Q" {
 		t.Error("V1 Colorado parser extracted wrong middle name")
 	}
 
-	if s.LastName() != "PUBLIC" {
+	if s.LastName != "PUBLIC" {
 		t.Error("V1 Colorado parser extracted wrong last name")
 	}
 }
@@ -131,95 +131,95 @@ func TestV1Parser(t *testing.T) {
 		t.Error("V1 parser failed")
 	}
 
-	if s.IssuerName() != "Virginia" {
+	if s.IssuerName != "Virginia" {
 		t.Error("V1 parser extracted wrong issuer")
 	}
 
-	if s.FirstName() != "JOHN" {
+	if s.FirstName != "JOHN" {
 		t.Error("V1 parser extracted wrong first name")
 	}
 
-	if s.MiddleNames()[0] != "Q" {
+	if s.MiddleNames[0] != "Q" {
 		t.Error("V1 parser extracted wrong middle name")
 	}
 
-	if s.LastName() != "PUBLIC" {
+	if s.LastName != "PUBLIC" {
 		t.Error("V1 parser extracted wrong last name")
 	}
 
-	if s.Country() != "USA" {
+	if s.Country != "USA" {
 		t.Error("V1 parser got wrong country")
 	}
 
-	if s.Street() != "123 MAIN STREET" {
+	if s.Street != "123 MAIN STREET" {
 		t.Error("V1 parser got wrong street")
 	}
 
-	if s.City() != "ANYTOWN" {
+	if s.City != "ANYTOWN" {
 		t.Error("V1 parser got wrong city")
 	}
 
-	if s.State() != "VA" {
+	if s.State != "VA" {
 		t.Error("V1 parser got wrong state")
 	}
 
-	if s.Postal() != "123459999" {
+	if s.Postal != "123459999" {
 		t.Error("V1 parser got wrong postal code")
 	}
 
-	if s.DateOfBirth().Day() != 23 {
+	if s.DateOfBirth.Day() != 23 {
 		t.Error("V1 parser got wrong date of birth day")
 	}
 
-	if s.DateOfBirth().Month() != 11 {
+	if s.DateOfBirth.Month() != 11 {
 		t.Error("V1 parser got wrong date of birth month")
 	}
 
-	if s.DateOfBirth().Year() != 1976 {
+	if s.DateOfBirth.Year() != 1976 {
 		t.Error("V1 parser got wrong date of birth year")
 	}
 
-	if s.CustomerId() != "0123456789ABC" {
+	if s.CustomerID != "0123456789ABC" {
 		t.Error("V1 parser got wrong customer id")
 	}
 
-	if s.EndorsementCodes() != "" {
+	if s.EndorsementCodes != "" {
 		t.Error("V1 parser got wrong endorsement codes")
 	}
 
-	if s.VehicleClass() != "DM" {
+	if s.VehicleClass != "DM" {
 		t.Error("V1 parser got wrong vehicle class")
 	}
 
-	if s.RestrictionCodes() != "" {
+	if s.RestrictionCodes != "" {
 		t.Error("V1 parser got wrong restriction codes")
 	}
 
-	if s.Sex() != DriverSexMale {
+	if s.Sex != DriverSexMale {
 		t.Error("V1 parser got wrong sex")
 	}
 
-	if s.ExpiryDate().Day() != 1 {
+	if s.ExpiryDate.Day() != 1 {
 		t.Error("V1 parser got wrong expiry day")
 	}
 
-	if s.ExpiryDate().Month() != 12 {
+	if s.ExpiryDate.Month() != 12 {
 		t.Error("V1 parser got wrong expiry month")
 	}
 
-	if s.ExpiryDate().Year() != 2001 {
+	if s.ExpiryDate.Year() != 2001 {
 		t.Error("V1 parser got wrong expiry year")
 	}
 
-	if s.IssueDate().Day() != 1 {
+	if s.IssueDate.Day() != 1 {
 		t.Error("V1 parser got wrong issue day")
 	}
 
-	if s.IssueDate().Month() != 12 {
+	if s.IssueDate.Month() != 12 {
 		t.Error("V1 parser got wrong issue month")
 	}
 
-	if s.IssueDate().Year() != 1996 {
+	if s.IssueDate.Year() != 1996 {
 		t.Error("V1 parser got wrong issue year")
 	}
 }
@@ -235,99 +235,99 @@ func TestV3Parser(t *testing.T) {
 		t.Error("V3 parser failed")
 	}
 
-	if s.IssuerName() != "Texas" {
+	if s.IssuerName != "Texas" {
 		t.Error("V3 parser extracted wrong issuer")
 	}
 
-	if s.FirstName() != "JAMES" {
+	if s.FirstName != "JAMES" {
 		t.Error("V3 parser extracted wrong first name")
 	}
 
-	if len(s.MiddleNames()) != 2 {
+	if len(s.MiddleNames) != 2 {
 		t.Error("V3 parser failed to extract middle names")
 	}
 
-	if s.MiddleNames()[0] != "ROBERT" || s.MiddleNames()[1] != "R" {
+	if s.MiddleNames[0] != "ROBERT" || s.MiddleNames[1] != "R" {
 		t.Error("V3 parser extracted wrong middle names")
 	}
 
-	if s.LastName() != "JONES" {
+	if s.LastName != "JONES" {
 		t.Error("V3 parser extracted wrong last name")
 	}
 
-	if s.DateOfBirth().Day() != 11 {
+	if s.DateOfBirth.Day() != 11 {
 		t.Error("V3 parser got wrong date of birth day")
 	}
 
-	if s.DateOfBirth().Month() != 10 {
+	if s.DateOfBirth.Month() != 10 {
 		t.Error("V3 parser got wrong date of birth month")
 	}
 
-	if s.DateOfBirth().Year() != 1978 {
+	if s.DateOfBirth.Year() != 1978 {
 		t.Error("V3 parser got wrong date of birth year")
 	}
 
-	if s.CustomerId() != "22334455" {
+	if s.CustomerID != "22334455" {
 		t.Error("V3 parser got wrong customer id")
 	}
 
-	if s.EndorsementCodes() != "P" {
+	if s.EndorsementCodes != "P" {
 		t.Error("V3 parser got wrong endorsement codes")
 	}
 
-	if s.VehicleClass() != "B" {
+	if s.VehicleClass != "B" {
 		t.Error("V3 parser got wrong vehicle class")
 	}
 
-	if s.RestrictionCodes() != "LP" {
+	if s.RestrictionCodes != "LP" {
 		t.Error("V3 parser got wrong restriction codes")
 	}
 
-	if s.Country() != "USA" {
+	if s.Country != "USA" {
 		t.Error("V3 parser got wrong country")
 	}
 
-	if s.Street() != "123 SOME STREET" {
+	if s.Street != "123 SOME STREET" {
 		t.Error("V3 parser got wrong street")
 	}
 
-	if s.City() != "CITY 12" {
+	if s.City != "CITY 12" {
 		t.Error("V3 parser got wrong city")
 	}
 
-	if s.State() != "TX" {
+	if s.State != "TX" {
 		t.Error("V3 parser got wrong state")
 	}
 
-	if s.Postal() != "90210" {
+	if s.Postal != "90210" {
 		t.Error("V3 parser got wrong postal code")
 	}
 
-	if s.Sex() != DriverSexMale {
+	if s.Sex != DriverSexMale {
 		t.Error("V3 parser got wrong sex")
 	}
 
-	if s.ExpiryDate().Day() != 5 {
+	if s.ExpiryDate.Day() != 5 {
 		t.Error("V4 parser got wrong expiry day")
 	}
 
-	if s.ExpiryDate().Month() != 4 {
+	if s.ExpiryDate.Month() != 4 {
 		t.Error("V3 parser got wrong expiry month")
 	}
 
-	if s.ExpiryDate().Year() != 2018 {
+	if s.ExpiryDate.Year() != 2018 {
 		t.Error("V3 parser got wrong expiry year")
 	}
 
-	if s.IssueDate().Day() != 8 {
+	if s.IssueDate.Day() != 8 {
 		t.Error("V3 parser got wrong issue day")
 	}
 
-	if s.IssueDate().Month() != 7 {
+	if s.IssueDate.Month() != 7 {
 		t.Error("V3 parser got wrong issue month")
 	}
 
-	if s.IssueDate().Year() != 2012 {
+	if s.IssueDate.Year() != 2012 {
 		t.Error("V3 parser got wrong issue year")
 	}
 }
@@ -339,103 +339,103 @@ func TestV4Parser(t *testing.T) {
 		t.Error("V4 parser failed")
 	}
 
-	if s.IssuerName() != "Virginia" {
+	if s.IssuerName != "Virginia" {
 		t.Error("V4 parser extracted wrong issuer")
 	}
 
-	if s.FirstName() != "MICHAEL" {
+	if s.FirstName != "MICHAEL" {
 		t.Error("V4 parser extracted wrong first name")
 	}
 
-	if len(s.MiddleNames()) != 2 {
+	if len(s.MiddleNames) != 2 {
 		t.Error("V4 parser failed to extract middle names")
 	}
 
-	if s.MiddleNames()[0] != "JOHN" || s.MiddleNames()[1] != "BOB" {
+	if s.MiddleNames[0] != "JOHN" || s.MiddleNames[1] != "BOB" {
 		t.Error("V4 parser extracted wrong middle names")
 	}
 
-	if s.LastName() != "SAMPLE" {
+	if s.LastName != "SAMPLE" {
 		t.Error("V4 parser extracted wrong last name")
 	}
 
-	if s.NameSuffix() != "JR" {
+	if s.NameSuffix != "JR" {
 		t.Error("V4 parser extracted wrong name suffix")
 	}
 
-	if s.DateOfBirth().Day() != 7 {
+	if s.DateOfBirth.Day() != 7 {
 		t.Error("V4 parser got wrong date of birth day")
 	}
 
-	if s.DateOfBirth().Month() != 6 {
+	if s.DateOfBirth.Month() != 6 {
 		t.Error("V4 parser got wrong date of birth month")
 	}
 
-	if s.DateOfBirth().Year() != 1986 {
+	if s.DateOfBirth.Year() != 1986 {
 		t.Error("V4 parser got wrong date of birth year")
 	}
 
-	if s.CustomerId() != "T64235789" {
+	if s.CustomerID != "T64235789" {
 		t.Error("V4 parser got wrong customer id")
 	}
 
-	if s.EndorsementCodes() != "PH" {
+	if s.EndorsementCodes != "PH" {
 		t.Error("V4 parser got wrong endorsement codes")
 	}
 
-	if s.VehicleClass() != "D" {
+	if s.VehicleClass != "D" {
 		t.Error("V4 parser got wrong vehicle class")
 	}
 
-	if s.RestrictionCodes() != "K" {
+	if s.RestrictionCodes != "K" {
 		t.Error("V4 parser got wrong restriction codes")
 	}
 
-	if s.Country() != "USA" {
+	if s.Country != "USA" {
 		t.Error("V4 parser got wrong country")
 	}
 
-	if s.Street() != "2300 WEST BROAD STREET" {
+	if s.Street != "2300 WEST BROAD STREET" {
 		t.Error("V4 parser got wrong street")
 	}
 
-	if s.City() != "RICHMOND" {
+	if s.City != "RICHMOND" {
 		t.Error("V4 parser got wrong city")
 	}
 
-	if s.State() != "VA" {
+	if s.State != "VA" {
 		t.Error("V4 parser got wrong state")
 	}
 
-	if s.Postal() != "23269" {
+	if s.Postal != "23269" {
 		t.Error("V4 parser got wrong postal code")
 	}
 
-	if s.Sex() != DriverSexMale {
+	if s.Sex != DriverSexMale {
 		t.Error("V4 parser got wrong sex")
 	}
 
-	if s.ExpiryDate().Day() != 10 {
+	if s.ExpiryDate.Day() != 10 {
 		t.Error("V4 parser got wrong expiry day")
 	}
 
-	if s.ExpiryDate().Month() != 12 {
+	if s.ExpiryDate.Month() != 12 {
 		t.Error("V4 parser got wrong expiry month")
 	}
 
-	if s.ExpiryDate().Year() != 2012 {
+	if s.ExpiryDate.Year() != 2012 {
 		t.Error("V4 parser got wrong expiry year")
 	}
 
-	if s.IssueDate().Day() != 6 {
+	if s.IssueDate.Day() != 6 {
 		t.Error("V4 parser got wrong issue day")
 	}
 
-	if s.IssueDate().Month() != 6 {
+	if s.IssueDate.Month() != 6 {
 		t.Error("V4 parser got wrong issue month")
 	}
 
-	if s.IssueDate().Year() != 2008 {
+	if s.IssueDate.Year() != 2008 {
 		t.Error("V4 parser got wrong issue year")
 	}
 }
@@ -447,103 +447,103 @@ func TestV5Parser(t *testing.T) {
 		t.Error("V5 parser failed")
 	}
 
-	if s.IssuerName() != "Virginia" {
+	if s.IssuerName != "Virginia" {
 		t.Error("V5 parser extracted wrong issuer")
 	}
 
-	if s.FirstName() != "MICHAEL" {
+	if s.FirstName != "MICHAEL" {
 		t.Error("V5 parser extracted wrong first name")
 	}
 
-	if len(s.MiddleNames()) != 2 {
+	if len(s.MiddleNames) != 2 {
 		t.Error("V5 parser failed to extract middle names")
 	}
 
-	if s.MiddleNames()[0] != "JOHN" || s.MiddleNames()[1] != "BOB" {
+	if s.MiddleNames[0] != "JOHN" || s.MiddleNames[1] != "BOB" {
 		t.Error("V5 parser extracted wrong middle names")
 	}
 
-	if s.LastName() != "SAMPLE" {
+	if s.LastName != "SAMPLE" {
 		t.Error("V5 parser extracted wrong last name")
 	}
 
-	if s.NameSuffix() != "JR" {
+	if s.NameSuffix != "JR" {
 		t.Error("V4 parser extracted wrong name suffix")
 	}
 
-	if s.DateOfBirth().Day() != 7 {
+	if s.DateOfBirth.Day() != 7 {
 		t.Error("V5 parser got wrong date of birth day")
 	}
 
-	if s.DateOfBirth().Month() != 6 {
+	if s.DateOfBirth.Month() != 6 {
 		t.Error("V5 parser got wrong date of birth month")
 	}
 
-	if s.DateOfBirth().Year() != 1986 {
+	if s.DateOfBirth.Year() != 1986 {
 		t.Error("V5 parser got wrong date of birth year")
 	}
 
-	if s.CustomerId() != "T64235789" {
+	if s.CustomerID != "T64235789" {
 		t.Error("V5 parser got wrong customer id")
 	}
 
-	if s.EndorsementCodes() != "PH" {
+	if s.EndorsementCodes != "PH" {
 		t.Error("V5 parser got wrong endorsement codes")
 	}
 
-	if s.VehicleClass() != "D" {
+	if s.VehicleClass != "D" {
 		t.Error("V5 parser got wrong vehicle class")
 	}
 
-	if s.RestrictionCodes() != "K" {
+	if s.RestrictionCodes != "K" {
 		t.Error("V5 parser got wrong restriction codes")
 	}
 
-	if s.Country() != "USA" {
+	if s.Country != "USA" {
 		t.Error("V5 parser got wrong country")
 	}
 
-	if s.Street() != "2300 WEST BROAD STREET" {
+	if s.Street != "2300 WEST BROAD STREET" {
 		t.Error("V5 parser got wrong street")
 	}
 
-	if s.City() != "RICHMOND" {
+	if s.City != "RICHMOND" {
 		t.Error("V5 parser got wrong city")
 	}
 
-	if s.State() != "VA" {
+	if s.State != "VA" {
 		t.Error("V5 parser got wrong state")
 	}
 
-	if s.Postal() != "23269" {
+	if s.Postal != "23269" {
 		t.Error("V5 parser got wrong postal code")
 	}
 
-	if s.Sex() != DriverSexMale {
+	if s.Sex != DriverSexMale {
 		t.Error("V5 parser got wrong sex")
 	}
 
-	if s.ExpiryDate().Day() != 10 {
+	if s.ExpiryDate.Day() != 10 {
 		t.Error("5V5 parser got wrong expiry day")
 	}
 
-	if s.ExpiryDate().Month() != 12 {
+	if s.ExpiryDate.Month() != 12 {
 		t.Error("V5 parser got wrong expiry month")
 	}
 
-	if s.ExpiryDate().Year() != 2012 {
+	if s.ExpiryDate.Year() != 2012 {
 		t.Error("V5 parser got wrong expiry year")
 	}
 
-	if s.IssueDate().Day() != 6 {
+	if s.IssueDate.Day() != 6 {
 		t.Error("V5 parser got wrong issue day")
 	}
 
-	if s.IssueDate().Month() != 6 {
+	if s.IssueDate.Month() != 6 {
 		t.Error("V5 parser got wrong issue month")
 	}
 
-	if s.IssueDate().Year() != 2008 {
+	if s.IssueDate.Year() != 2008 {
 		t.Error("V5 parser got wrong issue year")
 	}
 }
@@ -555,103 +555,103 @@ func TestV6Parser(t *testing.T) {
 		t.Error("V6 parser failed")
 	}
 
-	if s.IssuerName() != "Virginia" {
+	if s.IssuerName != "Virginia" {
 		t.Error("V6 parser extracted wrong issuer")
 	}
 
-	if s.FirstName() != "MICHAEL" {
+	if s.FirstName != "MICHAEL" {
 		t.Error("V6 parser extracted wrong first name")
 	}
 
-	if len(s.MiddleNames()) != 2 {
+	if len(s.MiddleNames) != 2 {
 		t.Error("V6 parser failed to extract middle names")
 	}
 
-	if s.MiddleNames()[0] != "JOHN" || s.MiddleNames()[1] != "BOB" {
+	if s.MiddleNames[0] != "JOHN" || s.MiddleNames[1] != "BOB" {
 		t.Error("V6 parser extracted wrong middle names")
 	}
 
-	if s.LastName() != "SAMPLE" {
+	if s.LastName != "SAMPLE" {
 		t.Error("V6 parser extracted wrong last name")
 	}
 
-	if s.NameSuffix() != "JR" {
+	if s.NameSuffix != "JR" {
 		t.Error("V4 parser extracted wrong name suffix")
 	}
 
-	if s.DateOfBirth().Day() != 7 {
+	if s.DateOfBirth.Day() != 7 {
 		t.Error("V6 parser got wrong date of birth day")
 	}
 
-	if s.DateOfBirth().Month() != 6 {
+	if s.DateOfBirth.Month() != 6 {
 		t.Error("V6 parser got wrong date of birth month")
 	}
 
-	if s.DateOfBirth().Year() != 1986 {
+	if s.DateOfBirth.Year() != 1986 {
 		t.Error("V6 parser got wrong date of birth year")
 	}
 
-	if s.CustomerId() != "T64235789" {
+	if s.CustomerID != "T64235789" {
 		t.Error("V6 parser got wrong customer id")
 	}
 
-	if s.EndorsementCodes() != "PH" {
+	if s.EndorsementCodes != "PH" {
 		t.Error("V6 parser got wrong endorsement codes")
 	}
 
-	if s.VehicleClass() != "D" {
+	if s.VehicleClass != "D" {
 		t.Error("V6 parser got wrong vehicle class")
 	}
 
-	if s.RestrictionCodes() != "K" {
+	if s.RestrictionCodes != "K" {
 		t.Error("V6 parser got wrong restriction codes")
 	}
 
-	if s.Country() != "USA" {
+	if s.Country != "USA" {
 		t.Error("V6 parser got wrong country")
 	}
 
-	if s.Street() != "2300 WEST BROAD STREET" {
+	if s.Street != "2300 WEST BROAD STREET" {
 		t.Error("V6 parser got wrong street")
 	}
 
-	if s.City() != "RICHMOND" {
+	if s.City != "RICHMOND" {
 		t.Error("V6 parser got wrong city")
 	}
 
-	if s.State() != "VA" {
+	if s.State != "VA" {
 		t.Error("V6 parser got wrong state")
 	}
 
-	if s.Postal() != "23269" {
+	if s.Postal != "23269" {
 		t.Error("V6 parser got wrong postal code")
 	}
 
-	if s.Sex() != DriverSexMale {
+	if s.Sex != DriverSexMale {
 		t.Error("V6 parser got wrong sex")
 	}
 
-	if s.ExpiryDate().Day() != 10 {
+	if s.ExpiryDate.Day() != 10 {
 		t.Error("V6 parser got wrong expiry day")
 	}
 
-	if s.ExpiryDate().Month() != 12 {
+	if s.ExpiryDate.Month() != 12 {
 		t.Error("V6 parser got wrong expiry month")
 	}
 
-	if s.ExpiryDate().Year() != 2012 {
+	if s.ExpiryDate.Year() != 2012 {
 		t.Error("V6 parser got wrong expiry year")
 	}
 
-	if s.IssueDate().Day() != 6 {
+	if s.IssueDate.Day() != 6 {
 		t.Error("V6 parser got wrong issue day")
 	}
 
-	if s.IssueDate().Month() != 6 {
+	if s.IssueDate.Month() != 6 {
 		t.Error("V6 parser got wrong issue month")
 	}
 
-	if s.IssueDate().Year() != 2008 {
+	if s.IssueDate.Year() != 2008 {
 		t.Error("V6 parser got wrong issue year")
 	}
 }
@@ -663,103 +663,103 @@ func TestV7Parser(t *testing.T) {
 		t.Error("V7 parser failed")
 	}
 
-	if s.IssuerName() != "Virginia" {
+	if s.IssuerName != "Virginia" {
 		t.Error("V7 parser extracted wrong issuer")
 	}
 
-	if s.FirstName() != "MICHAEL" {
+	if s.FirstName != "MICHAEL" {
 		t.Error("V7 parser extracted wrong first name")
 	}
 
-	if len(s.MiddleNames()) != 2 {
+	if len(s.MiddleNames) != 2 {
 		t.Error("V7 parser failed to extract middle names")
 	}
 
-	if s.MiddleNames()[0] != "JOHN" || s.MiddleNames()[1] != "BOB" {
+	if s.MiddleNames[0] != "JOHN" || s.MiddleNames[1] != "BOB" {
 		t.Error("V7 parser extracted wrong middle names")
 	}
 
-	if s.LastName() != "SAMPLE" {
+	if s.LastName != "SAMPLE" {
 		t.Error("V7 parser extracted wrong last name")
 	}
 
-	if s.NameSuffix() != "JR" {
+	if s.NameSuffix != "JR" {
 		t.Error("V4 parser extracted wrong name suffix")
 	}
 
-	if s.DateOfBirth().Day() != 7 {
+	if s.DateOfBirth.Day() != 7 {
 		t.Error("V7 parser got wrong date of birth day")
 	}
 
-	if s.DateOfBirth().Month() != 6 {
+	if s.DateOfBirth.Month() != 6 {
 		t.Error("V7 parser got wrong date of birth month")
 	}
 
-	if s.DateOfBirth().Year() != 1986 {
+	if s.DateOfBirth.Year() != 1986 {
 		t.Error("V7 parser got wrong date of birth year")
 	}
 
-	if s.CustomerId() != "T64235789" {
+	if s.CustomerID != "T64235789" {
 		t.Error("V7 parser got wrong customer id")
 	}
 
-	if s.EndorsementCodes() != "PH" {
+	if s.EndorsementCodes != "PH" {
 		t.Error("V7 parser got wrong endorsement codes")
 	}
 
-	if s.VehicleClass() != "D" {
+	if s.VehicleClass != "D" {
 		t.Error("V7 parser got wrong vehicle class")
 	}
 
-	if s.RestrictionCodes() != "K" {
+	if s.RestrictionCodes != "K" {
 		t.Error("V7 parser got wrong restriction codes")
 	}
 
-	if s.Country() != "USA" {
+	if s.Country != "USA" {
 		t.Error("V7 parser got wrong country")
 	}
 
-	if s.Street() != "2300 WEST BROAD STREET" {
+	if s.Street != "2300 WEST BROAD STREET" {
 		t.Error("V7 parser got wrong street")
 	}
 
-	if s.City() != "RICHMOND" {
+	if s.City != "RICHMOND" {
 		t.Error("V7 parser got wrong city")
 	}
 
-	if s.State() != "VA" {
+	if s.State != "VA" {
 		t.Error("V7 parser got wrong state")
 	}
 
-	if s.Postal() != "23269" {
+	if s.Postal != "23269" {
 		t.Error("V7 parser got wrong postal code")
 	}
 
-	if s.Sex() != DriverSexMale {
+	if s.Sex != DriverSexMale {
 		t.Error("V7 parser got wrong sex")
 	}
 
-	if s.ExpiryDate().Day() != 10 {
+	if s.ExpiryDate.Day() != 10 {
 		t.Error("V7 parser got wrong expiry day")
 	}
 
-	if s.ExpiryDate().Month() != 12 {
+	if s.ExpiryDate.Month() != 12 {
 		t.Error("V7 parser got wrong expiry month")
 	}
 
-	if s.ExpiryDate().Year() != 2012 {
+	if s.ExpiryDate.Year() != 2012 {
 		t.Error("V7 parser got wrong expiry year")
 	}
 
-	if s.IssueDate().Day() != 6 {
+	if s.IssueDate.Day() != 6 {
 		t.Error("V7 parser got wrong issue day")
 	}
 
-	if s.IssueDate().Month() != 6 {
+	if s.IssueDate.Month() != 6 {
 		t.Error("V7 parser got wrong issue month")
 	}
 
-	if s.IssueDate().Year() != 2008 {
+	if s.IssueDate.Year() != 2008 {
 		t.Error("V7 parser got wrong issue year")
 	}
 }
@@ -771,39 +771,39 @@ func TestV7CanadaParser(t *testing.T) {
 		t.Error("V7 Canada parser failed")
 	}
 
-	if s.DateOfBirth().Day() != 7 {
+	if s.DateOfBirth.Day() != 7 {
 		t.Error("V7 Canada parser got wrong date of birth day")
 	}
 
-	if s.DateOfBirth().Month() != 6 {
+	if s.DateOfBirth.Month() != 6 {
 		t.Error("V7 Canada parser got wrong date of birth month")
 	}
 
-	if s.DateOfBirth().Year() != 1986 {
+	if s.DateOfBirth.Year() != 1986 {
 		t.Error("V7 Canada parser got wrong date of birth year")
 	}
 
-	if s.ExpiryDate().Day() != 10 {
+	if s.ExpiryDate.Day() != 10 {
 		t.Error("V7 Canada parser got wrong expiry day")
 	}
 
-	if s.ExpiryDate().Month() != 12 {
+	if s.ExpiryDate.Month() != 12 {
 		t.Error("V7 Canada parser got wrong expiry month")
 	}
 
-	if s.ExpiryDate().Year() != 2012 {
+	if s.ExpiryDate.Year() != 2012 {
 		t.Error("V7 Canada parser got wrong expiry year")
 	}
 
-	if s.IssueDate().Day() != 6 {
+	if s.IssueDate.Day() != 6 {
 		t.Error("V7 Canada parser got wrong issue day")
 	}
 
-	if s.IssueDate().Month() != 6 {
+	if s.IssueDate.Month() != 6 {
 		t.Error("V7 Canada parser got wrong issue month")
 	}
 
-	if s.IssueDate().Year() != 2008 {
+	if s.IssueDate.Year() != 2008 {
 		t.Error("V7 Canada parser got wrong issue year")
 	}
 }

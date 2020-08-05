@@ -2,73 +2,57 @@ package dlidparser
 
 import (
 	"errors"
+	"fmt"
 	"strconv"
 	"strings"
 	"time"
 )
 
-const ColoradoIssuerId string = "636020"
-const ConnecticutIssuerId string = "636006"
-const IllinoisIssuerId string = "636035"
-const MassachusettsIssuerId string = "636002"
-const SouthCarolinaIssuerId string = "636005"
-const TennesseeIssuerId string = "636053"
+const coloradoIssuerID string = "636020"
+const connecticutIssuerID string = "636006"
+const illinoisIssuerID string = "636035"
+const massachusettsIssuerID string = "636002"
+const southCarolinaIssuerID string = "636005"
+const tennesseeIssuerID string = "636053"
+const minnIssuerID string = "636038"
 
-func parseV1(data string, issuer string) (license *DLIDLicense, err error) {
-
-	start, end, err := dataRangeV1(data)
-
-	if issuer == IllinoisIssuerId {
-
-		// Illinois are the worst offenders so far in terms of mangling the DLID
-		// spec.  They store name, licence number, expiry date and date of birth
-		// as expected, but then go all-out crazy and encrypt everything else.
-		// This means that the data range exceeds the size of the licence data
-		// string.  We have to treat Illinois as a special case.
-		end = len(data) - 1
+func parseV1(data string, issuer string) (*DLIDLicense, error) {
+	start, _, _ := dataRangeV1(data)
+	if start == -1 {
+		start, _, _ = dataRangeV1(data)
 	}
-
-	if end >= len(data) {
-		err = errors.New("Payload location does not exist in data")
+	//yeah this is a hack
+	if start > len(data) && strings.Index(data, "DAB") != -1 {
+		start = strings.Index(data, "DAB")
 	}
+	if start > len(data) {
+		return nil, fmt.Errorf("couldn't find start of payload")
+	}
+	end := len(data) - 1
 
 	payload := data[start:end]
-
-	if err != nil {
-		return
-	}
-
-	license, err = parseDataV1(payload, issuer)
-
-	if err != nil {
-		return
-	}
-
-	return
+	return parseDataV1(payload, issuer)
 }
 
-func dataRangeV1(data string) (start int, end int, err error) {
+func dataRangeV1(data string) (int, int, error) {
 
-	start, err = strconv.Atoi(data[21:25])
-
-	if err != nil {
-		err = errors.New("Data contains malformed payload location")
-		return
-	}
-
-	end, err = strconv.Atoi(data[25:29])
+	start, err := strconv.Atoi(data[21:25])
 
 	if err != nil {
-		err = errors.New("Data contains malformed payload length")
-		return
+		return 0, 0, errors.New("Data contains malformed payload location")
 	}
 
-	end += start
+	end, err := strconv.Atoi(data[25:29])
 
-	return
+	if err != nil {
+		end = len(data) - 1
+	} else {
+		end += start
+	}
+	return start, end, nil
 }
 
-func parseDataV1(licenceData string, issuer string) (license *DLIDLicense, err error) {
+func parseDataV1(licenceData string, issuer string) (*DLIDLicense, error) {
 
 	// Version 1 of the DLID card spec was published in 2000.  As of 2012, it is
 	// the version used in Colorado.
@@ -101,13 +85,16 @@ func parseDataV1(licenceData string, issuer string) (license *DLIDLicense, err e
 
 	components := strings.Split(licenceData, "\n")
 
-	license = new(DLIDLicense)
+	license := &DLIDLicense{}
 
-	license.SetIssuerId(issuer)
-	license.SetIssuerName(issuers[issuer])
+	license.IssuerID = issuer
+	license.IssuerName = issuers[issuer]
 
 	// Country is always USA for V1 licenses
-	license.SetCountry("USA")
+	license.Country = "USA"
+	expire := ""
+	issue := ""
+	dob := ""
 
 	for component := range components {
 
@@ -122,27 +109,19 @@ func parseDataV1(licenceData string, issuer string) (license *DLIDLicense, err e
 
 		switch identifier {
 		case "DAR":
-			license.SetVehicleClass(data)
-
+			license.VehicleClass = data
 		case "DAS":
-			license.SetRestrictionCodes(data)
-
+			license.RestrictionCodes = data
 		case "DAT":
-			license.SetEndorsementCodes(data)
-
+			license.EndorsementCodes = data
 		case "DAA":
-
 			// Early versions of the Colorado implementation screwed up the
 			// delimiter - they use a space instead of the specified comma.
-
 			separator := " "
-
 			if strings.Index(data, separator) == -1 {
 				separator = ","
 			}
-
 			names := strings.Split(data, separator)
-
 			// According to the spec, names are ordered LAST,FIRST,MIDDLE.
 			// However, the geniuses in the Colorado and Tennessee DMVs order it
 			// FIRST,MIDDLE,LAST.  We'll use the issuer ID number to
@@ -151,66 +130,54 @@ func parseDataV1(licenceData string, issuer string) (license *DLIDLicense, err e
 			//
 			// http://www.aamva.org/IIN-and-RID/
 
-			if issuer == ColoradoIssuerId || issuer == TennesseeIssuerId {
-
+			if issuer == coloradoIssuerID || issuer == tennesseeIssuerID || issuer == minnIssuerID {
 				// Colorado's backwards formatting style...
-				license.SetFirstName(names[0])
+				license.FirstName = names[0]
 
 				if len(names) > 2 {
-					license.SetMiddleNames(names[1 : len(names)-1])
-					license.SetLastName(names[len(names)-1])
+					license.MiddleNames = names[1 : len(names)-1]
+					license.LastName = names[len(names)-1]
 				} else if len(names) > 1 {
-					license.SetLastName(names[1])
+					license.LastName = names[1]
 				}
 			} else {
 
 				// Everyone else, hopefully.
-				license.SetLastName(names[0])
+				license.LastName = names[0]
 
 				if len(names) > 1 {
-					license.SetFirstName(names[1])
+					license.FirstName = names[1]
 
 					if len(names) > 2 {
-						license.SetMiddleNames(names[2:])
+						license.MiddleNames = names[2:]
 					}
 				}
 			}
 
 		case "DAE":
-			license.SetNameSuffix(data)
+			license.NameSuffix = data
 
 		case "DAL":
-
 			// Colorado screws up again: they omit the *required* DAG field and
 			// substitute the optional DAL field in older licences.
 			fallthrough
-
 		case "DAG":
-			license.SetStreet(data)
-
+			license.Street = data
 		case "DAN":
-
 			// Again, old Colorado licences ignore the spec.
 			fallthrough
-
 		case "DAI":
-			license.SetCity(data)
-
+			license.City = data
 		case "DAO":
-
 			// Colorado strikes again.  Honestly, what is the point in having a
 			// spec if you don't follow it?
 			fallthrough
-
 		case "DAJ":
-			license.SetState(data)
-
+			license.State = data
 		case "DAP":
 			// More Colorado shenanigans.
 			fallthrough
-
 		case "DAK":
-
 			// Colorado uses the 5-digit zip code.  South Carolina uses the
 			// 5 digit zip code plus the +4 extension all smooshed together
 			// into one long string.  Massachusetts uses the 5 digit zip
@@ -221,19 +188,14 @@ func parseDataV1(licenceData string, issuer string) (license *DLIDLicense, err e
 			// defeat in trying to untangle the incredible mess implemented
 			// in this single field; we'll just show the zip as it is
 			// stored.
-			license.SetPostal(strings.Trim(data, " "))
-
+			license.Postal = strings.Trim(data, " ")
 		case "DAQ":
-			license.SetCustomerId(data)
-
+			license.CustomerID = data
 		case "DBA":
-			license.SetExpiryDate(parseDateV1(data))
-
+			expire = data
 		case "DBB":
-			license.SetDateOfBirth(parseDateV1(data))
-
+			dob = data
 		case "DBC":
-
 			// Sex can be stored as M/F if it uses the DLID code.  It could
 			// also be stored as 0/1/2/9 if it uses the ANSI D-20 codes,
 			// available here:
@@ -244,49 +206,53 @@ func parseDataV1(licenceData string, issuer string) (license *DLIDLicense, err e
 			case "M":
 				fallthrough
 			case "1":
-				license.SetSex(DriverSexMale)
+				license.Sex = DriverSexMale
 			case "F":
 				fallthrough
 			case "2":
-				license.SetSex(DriverSexFemale)
+				license.Sex = DriverSexFemale
 			default:
-				license.SetSex(DriverSexNone)
+				license.Sex = DriverSexNone
 			}
-
 		case "DBD":
-			license.SetIssueDate(parseDateV1(data))
-
+			issue = data
 		case "DBK":
-
 			// Optional and probably not available
-			license.SetSocialSecurityNumber(data)
+			license.SocialSecurityNumber = data
+		case "DAB":
+			license.LastName = data
+		case "DAC":
+			license.FirstName = data
+		case "DAD":
+			license.MiddleNames = []string{data}
+			/*
+				default:
+					fmt.Printf("Unknown: %v : %v\n", identifier, data)
+			*/
 		}
 	}
 
-	return
+	license.ExpiryDate = parseDateV1(expire)
+	license.DateOfBirth = parseDateV1(dob)
+	license.IssueDate = parseDateV1(issue)
+
+	return license, nil
 }
 
 func parseDateV1(data string) time.Time {
-
-	year, err := strconv.Atoi(data[:4])
-
-	if err != nil {
+	var format string
+	switch len(data) {
+	case 8:
+		format = "20060102"
+	case 10: //odd NC vintage 2008 edition licenses
+		format = "01-02-2006"
+	default:
 		return time.Unix(0, 0)
 	}
 
-	month, err := strconv.Atoi(data[4:6])
-
+	d, err := time.Parse(format, data)
 	if err != nil {
 		return time.Unix(0, 0)
 	}
-
-	day, err := strconv.Atoi(data[6:8])
-
-	if err != nil {
-		return time.Unix(0, 0)
-	}
-
-	location, err := time.LoadLocation("UTC")
-
-	return time.Date(year, time.Month(month), day, 0, 0, 0, 0, location)
+	return d
 }

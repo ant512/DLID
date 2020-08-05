@@ -1,197 +1,47 @@
 package dlidparser
 
 import (
+	"encoding/json"
 	"time"
 )
 
+//DriverSex - states record a sex
 type DriverSex int
 
+//Possibilities for different sex
 const (
 	DriverSexNone DriverSex = iota
 	DriverSexMale
 	DriverSexFemale
 )
 
+//DLIDLicense holds extracted driver's license info
 type DLIDLicense struct {
-	firstName             string
-	middleNames           []string
-	lastName              string
-	nameSuffix            string
-	street                string
-	city                  string
-	state                 string
-	country               string
-	postal                string
-	sex                   DriverSex
-	socialSecurityNumber  string
-	dateOfBirth           time.Time
-	issuerId              string
-	issuerName            string
-	expiryDate            time.Time
-	issueDate             time.Time
-	vehicleClass          string
-	restrictionCodes      string
-	endorsementCodes      string
-	customerId            string
-	documentDiscriminator string
+	FirstName             string    `json:"first_name,omitempty"`
+	MiddleNames           []string  `json:"middle_names,omitempty"`
+	LastName              string    `json:"last_name,omitempty"`
+	NameSuffix            string    `json:"name_suffix,omitempty"`
+	Street                string    `json:"street,omitempty"`
+	City                  string    `json:"city,omitempty"`
+	State                 string    `json:"state,omitempty"`
+	Country               string    `json:"country,omitempty"`
+	Postal                string    `json:"postal,omitempty"`
+	Sex                   DriverSex `json:"sex,omitempty"`
+	SocialSecurityNumber  string    `json:"social_security_number,omitempty"`
+	DateOfBirth           time.Time `json:"date_of_birth,omitempty"`
+	IssuerID              string    `json:"issuer_id,omitempty"`
+	IssuerName            string    `json:"issuer_name,omitempty"`
+	ExpiryDate            time.Time `json:"expiry_date,omitempty"`
+	IssueDate             time.Time `json:"issue_date,omitempty"`
+	VehicleClass          string    `json:"vehicle_class,omitempty"`
+	RestrictionCodes      string    `json:"restriction_codes,omitempty"`
+	EndorsementCodes      string    `json:"endorsement_codes,omitempty"`
+	CustomerID            string    `json:"customer_id,omitempty"`
+	DocumentDiscriminator string    `json:"document_discriminator,omitempty"`
+	AAMVAVersion          int       `json:"aamva_version,omitempty"`
 }
 
-func (d *DLIDLicense) SetFirstName(s string) {
-	d.firstName = s
-}
-
-func (d *DLIDLicense) FirstName() string {
-	return d.firstName
-}
-
-func (d *DLIDLicense) SetMiddleNames(s []string) {
-	d.middleNames = s
-}
-
-func (d *DLIDLicense) MiddleNames() []string {
-	return d.middleNames
-}
-
-func (d *DLIDLicense) SetLastName(s string) {
-	d.lastName = s
-}
-
-func (d *DLIDLicense) LastName() string {
-	return d.lastName
-}
-
-func (d *DLIDLicense) SetNameSuffix(s string) {
-	d.nameSuffix = s
-}
-
-func (d *DLIDLicense) NameSuffix() string {
-	return d.nameSuffix
-}
-
-func (d *DLIDLicense) SetStreet(s string) {
-	d.street = s
-}
-
-func (d *DLIDLicense) Street() string {
-	return d.street
-}
-
-func (d *DLIDLicense) SetCity(s string) {
-	d.city = s
-}
-
-func (d *DLIDLicense) City() string {
-	return d.city
-}
-
-func (d *DLIDLicense) SetState(s string) {
-	d.state = s
-}
-
-func (d *DLIDLicense) State() string {
-	return d.state
-}
-
-func (d *DLIDLicense) SetCountry(s string) {
-	d.country = s
-}
-
-func (d *DLIDLicense) Country() string {
-	return d.country
-}
-
-func (d *DLIDLicense) SetPostal(s string) {
-	d.postal = s
-}
-
-func (d *DLIDLicense) Postal() string {
-	return d.postal
-}
-
-func (d *DLIDLicense) SetSex(s DriverSex) {
-	d.sex = s
-}
-
-func (d *DLIDLicense) Sex() DriverSex {
-	return d.sex
-}
-
-func (d *DLIDLicense) SetSocialSecurityNumber(s string) {
-	d.socialSecurityNumber = s
-}
-
-func (d *DLIDLicense) SocialSecurityNumber() string {
-	return d.socialSecurityNumber
-}
-
-func (d *DLIDLicense) SetDateOfBirth(t time.Time) {
-	d.dateOfBirth = t
-}
-
-func (d *DLIDLicense) DateOfBirth() time.Time {
-	return d.dateOfBirth
-}
-
-func (d *DLIDLicense) IssuerId() string {
-	return d.issuerId
-}
-
-func (d *DLIDLicense) SetIssuerId(s string) {
-	d.issuerId = s
-}
-
-func (d *DLIDLicense) IssuerName() string {
-	return d.issuerName
-}
-
-func (d *DLIDLicense) SetIssuerName(s string) {
-	d.issuerName = s
-}
-
-func (d *DLIDLicense) VehicleClass() string {
-	return d.vehicleClass
-}
-
-func (d *DLIDLicense) SetVehicleClass(s string) {
-	d.vehicleClass = s
-}
-
-func (d *DLIDLicense) RestrictionCodes() string {
-	return d.restrictionCodes
-}
-
-func (d *DLIDLicense) SetRestrictionCodes(s string) {
-	d.restrictionCodes = s
-}
-
-func (d *DLIDLicense) EndorsementCodes() string {
-	return d.endorsementCodes
-}
-
-func (d *DLIDLicense) SetEndorsementCodes(s string) {
-	d.endorsementCodes = s
-}
-
-func (d *DLIDLicense) CustomerId() string {
-	return d.customerId
-}
-
-func (d *DLIDLicense) SetCustomerId(s string) {
-	d.customerId = s
-}
-
-func (d *DLIDLicense) SetExpiryDate(t time.Time) {
-	d.expiryDate = t
-}
-
-func (d *DLIDLicense) ExpiryDate() time.Time {
-	return d.expiryDate
-}
-
-func (d *DLIDLicense) SetIssueDate(t time.Time) {
-	d.issueDate = t
-}
-
-func (d *DLIDLicense) IssueDate() time.Time {
-	return d.issueDate
+func (d DLIDLicense) String() string {
+	b, _ := json.Marshal(d)
+	return string(b)
 }

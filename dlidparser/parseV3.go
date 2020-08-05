@@ -1,53 +1,53 @@
 package dlidparser
 
 import (
-	"errors"
-	"strconv"
 	"strings"
 	"time"
 )
 
-func parseV3(data string, issuer string) (license *DLIDLicense, err error) {
+func parseV3(data string, issuer string) (*DLIDLicense, error) {
 
 	start, end, err := dataRangeV2(data)
+	if err != nil {
+		return nil, err
+	}
 
 	if end >= len(data) {
-		err = errors.New("Payload location does not exist in data")
+		//lots of states don't count correct - VA i'm looking at you
+		end = len(data) - 1
 	}
 
 	payload := data[start:end]
 
-	if err != nil {
-		return
-	}
-
-	license, err = parseDataV3(payload, issuer)
+	license, err := parseDataV3(payload, issuer)
 
 	if err != nil {
-		return
+		return nil, err
 	}
 
-	return
+	return license, nil
 }
 
-func parseDataV3(licenceData string, issuer string) (license *DLIDLicense, err error) {
+func parseDataV3(licenceData string, issuer string) (*DLIDLicense, error) {
 
 	// Version 3 of the DLID card spec was published in 2005.  It is currently
 	// (as of 2012) used in Wisconsin.
 
-	if !strings.HasPrefix(licenceData, "DL") {
-		err = errors.New("Missing header in licence data chunk")
-		return
-	}
+	/*
+		if !strings.HasPrefix(licenceData, "DL") {
+			err := errors.New("Missing header in licence data chunk")
+			return nil, err
+		}
+	*/
 
 	licenceData = licenceData[2:]
 
 	components := strings.Split(licenceData, "\n")
 
-	license = new(DLIDLicense)
+	license := &DLIDLicense{}
 
-	license.SetIssuerId(issuer)
-	license.SetIssuerName(issuers[issuer])
+	license.IssuerID = issuer
+	license.IssuerName = issuers[issuer]
 
 	var dateOfBirth string
 	var expiryDate string
@@ -66,22 +66,16 @@ func parseDataV3(licenceData string, issuer string) (license *DLIDLicense, err e
 
 		switch identifier {
 		case "DCA":
-			license.SetVehicleClass(data)
-
+			license.VehicleClass = data
 		case "DCB":
-			license.SetRestrictionCodes(data)
-
+			license.RestrictionCodes = data
 		case "DCD":
-			license.SetEndorsementCodes(data)
-
+			license.EndorsementCodes = data
 		case "DCS":
-			license.SetLastName(data)
-
+			license.LastName = data
 		case "DCG":
-			license.SetCountry(data)
-
+			license.Country = data
 		case "DCT":
-
 			// This field contains all of the licencee's names except last
 			// name.  The V3 spec doc doesn't specify how the names are
 			// separated and doesn't provide an example (unlike the 2000
@@ -96,41 +90,38 @@ func parseDataV3(licenceData string, issuer string) (license *DLIDLicense, err e
 
 			names := strings.Split(data, separator)
 
-			license.SetFirstName(names[0])
+			license.FirstName = names[0]
 
 			if len(names) > 1 {
-				license.SetMiddleNames(names[1:])
+				license.MiddleNames = names[1:]
 			}
 
 		case "DAG":
-			license.SetStreet(data)
+			license.Street = data
 
 		case "DAI":
-			license.SetCity(data)
+			license.City = data
 
 		case "DAJ":
-			license.SetState(data)
+			license.State = data
 
 		case "DAK":
-			license.SetPostal(data)
+			license.Postal = data
 
 		case "DAQ":
-			license.SetCustomerId(data)
-
+			license.CustomerID = data
 		case "DBA":
 			expiryDate = data
-
 		case "DBB":
 			dateOfBirth = data
-
 		case "DBC":
 			switch data {
 			case "1":
-				license.SetSex(DriverSexMale)
+				license.Sex = DriverSexMale
 			case "2":
-				license.SetSex(DriverSexFemale)
+				license.Sex = DriverSexFemale
 			default:
-				license.SetSex(DriverSexNone)
+				license.Sex = DriverSexNone
 			}
 
 		case "DBD":
@@ -138,11 +129,17 @@ func parseDataV3(licenceData string, issuer string) (license *DLIDLicense, err e
 		}
 	}
 
+	//if empty default to USA - Michigan - doesn't set DCG - based on license issue 1.20.2017
+	//without country - doesn't parse dates
+	if license.Country == "" {
+		license.Country = "USA"
+	}
+
 	// At this point we should know the country and the postal code (both are
 	// mandatory fields) so we can undo the desperate mess the standards body
 	// made of the postal code field.
 
-	if license.Country() == "USA" && len(license.Postal()) > 0 {
+	if strings.Contains(license.Country, "USA") && len(strings.TrimSpace(license.Postal)) == 9 {
 
 		// For some reason known only to themselves, the standards guys took
 		// the V1 and 2 postal code standards (code padded to 11 characters with
@@ -159,26 +156,23 @@ func parseDataV3(licenceData string, issuer string) (license *DLIDLicense, err e
 		// Naturally, some Texas licences ignore the spec and just use 5
 		// characters if they don't have a +4 section.
 
-		if len(license.Postal()) > 5 {
-			zip := license.Postal()[:5]
-			plus4 := license.Postal()[5:9]
+		zip := license.Postal[:5]
+		plus4 := license.Postal[5:9]
 
-			if plus4 == "0000" {
-				license.SetPostal(zip)
-			} else {
-				license.SetPostal(zip + "+" + plus4)
-			}
+		if plus4 == "0000" {
+			license.Postal = zip
+		} else {
+			license.Postal = zip + "+" + plus4
 		}
 	}
 
 	// Now we can parse the birth date, too.
-	if len(license.Country()) > 0 {
-		license.SetDateOfBirth(parseDateV3(dateOfBirth, license.Country()))
-		license.SetExpiryDate(parseDateV3(expiryDate, license.Country()))
-		license.SetIssueDate(parseDateV3(issueDate, license.Country()))
+	if len(license.Country) > 0 {
+		license.DateOfBirth = parseDateV3(dateOfBirth, license.Country)
+		license.ExpiryDate = parseDateV3(expiryDate, license.Country)
+		license.IssueDate = parseDateV3(issueDate, license.Country)
 	}
-
-	return
+	return license, nil
 }
 
 func parseDateV3(data string, country string) time.Time {
@@ -191,51 +185,18 @@ func parseDateV3(data string, country string) time.Time {
 	// implementations of a standard within a single field in a single version
 	// of the standard.  Breathtakingly stupid.
 
-	var day int
-	var month int
-	var year int
-	var err error
-	var location *time.Location
-
-	if country == "USA" {
-		month, err = strconv.Atoi(data[:2])
-
-		if err != nil {
-			return time.Unix(0, 0)
-		}
-
-		day, err = strconv.Atoi(data[2:4])
-
-		if err != nil {
-			return time.Unix(0, 0)
-		}
-
-		year, err = strconv.Atoi(data[4:8])
-
-		if err != nil {
-			return time.Unix(0, 0)
-		}
-	} else {
-		year, err = strconv.Atoi(data[:4])
-
-		if err != nil {
-			return time.Unix(0, 0)
-		}
-
-		month, err = strconv.Atoi(data[4:6])
-
-		if err != nil {
-			return time.Unix(0, 0)
-		}
-
-		day, err = strconv.Atoi(data[6:8])
-
-		if err != nil {
-			return time.Unix(0, 0)
+	if len(data) != 8 {
+		return time.Unix(0, 0)
+	}
+	order := []string{"20060102", "01022006"}
+	if strings.Contains(country, "USA") {
+		order = []string{"01022006", "20060102"}
+	}
+	for _, format := range order {
+		t, err := time.Parse(format, data)
+		if err == nil {
+			return t
 		}
 	}
-
-	location, err = time.LoadLocation("UTC")
-
-	return time.Date(year, time.Month(month), day, 0, 0, 0, 0, location)
+	return time.Unix(0, 0)
 }
