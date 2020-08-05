@@ -149,7 +149,7 @@ func parseDataV4(licenceData string, issuer string) (*DLIDLicense, error) {
 		}
 	}
 
-	if license.IssuerName == "Wyoming" || license.IssuerName == "West Virginia" {
+	if license.IssuerName == "Wyoming" || (license.IssuerName == "West Virginia") {
 		license.DateOfBirth = parseDateV3(dateOfBirth, "CANADA")
 		license.ExpiryDate = parseDateV3(expiryDate, "CANADA")
 		license.IssueDate = parseDateV3(issueDate, "CANADA")

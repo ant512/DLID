@@ -1,7 +1,6 @@
 package dlidparser
 
 import (
-	"strconv"
 	"strings"
 	"time"
 )
@@ -186,51 +185,18 @@ func parseDateV3(data string, country string) time.Time {
 	// implementations of a standard within a single field in a single version
 	// of the standard.  Breathtakingly stupid.
 
-	var day int
-	var month int
-	var year int
-	var err error
-
 	if len(data) != 8 {
 		return time.Unix(0, 0)
 	}
+	order := []string{"20060102", "01022006"}
 	if strings.Contains(country, "USA") {
-		month, err = strconv.Atoi(data[:2])
-
-		if err != nil {
-			return time.Unix(0, 0)
-		}
-
-		day, err = strconv.Atoi(data[2:4])
-
-		if err != nil {
-			return time.Unix(0, 0)
-		}
-
-		year, err = strconv.Atoi(data[4:8])
-
-		if err != nil {
-			return time.Unix(0, 0)
-		}
-	} else {
-		year, err = strconv.Atoi(data[:4])
-
-		if err != nil {
-			return time.Unix(0, 0)
-		}
-
-		month, err = strconv.Atoi(data[4:6])
-
-		if err != nil {
-			return time.Unix(0, 0)
-		}
-
-		day, err = strconv.Atoi(data[6:8])
-
-		if err != nil {
-			return time.Unix(0, 0)
+		order = []string{"01022006", "20060102"}
+	}
+	for _, format := range order {
+		t, err := time.Parse(format, data)
+		if err == nil {
+			return t
 		}
 	}
-
-	return time.Date(year, time.Month(month), day, 0, 0, 0, 0, time.UTC)
+	return time.Unix(0, 0)
 }

@@ -155,24 +155,9 @@ func parseDateV2(data string) time.Time {
 	if len(data) != 8 {
 		return time.Unix(0, 0)
 	}
-
-	month, err := strconv.Atoi(data[:2])
-
+	t, err := time.Parse("01022006", data)
 	if err != nil {
 		return time.Unix(0, 0)
 	}
-
-	day, err := strconv.Atoi(data[2:4])
-
-	if err != nil {
-		return time.Unix(0, 0)
-	}
-
-	year, err := strconv.Atoi(data[4:8])
-
-	if err != nil {
-		return time.Unix(0, 0)
-	}
-
-	return time.Date(year, time.Month(month), day, 0, 0, 0, 0, time.UTC)
+	return t
 }
